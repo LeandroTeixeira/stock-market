@@ -4,14 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch --coverage",
+    "dev": "nodemon src/index.js",
+    "generator": "node ./src/data/converter.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "devDependencies": {
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^28.1.3",
+    "sinon": "^14.0.0"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "mongoose": "^6.4.4",
+    "nodemon": "^2.0.19"
   }
 }
