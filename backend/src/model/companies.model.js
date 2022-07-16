@@ -1,3 +1,5 @@
+const { Company } = require('../../models/index');
+
 const COMPANY_LIST = [
   {
     name: 'A',
@@ -628,4 +630,25 @@ const COMPANY_LIST = [
     fullName: 'AZZ Inc',
   }];
 
-module.exports = { COMPANY_LIST };
+async function getCompanies() {
+  const results = await Company.findAll({ raw: true, attributes: ['name', 'fullName'] });
+  return results;
+}
+
+async function getCompanyByAttribute(key, value) {
+  if (Object.keys(Company.rawAttributes).find((k) => k === key)) {
+    const result = await Company.findAll({
+      raw: true,
+      attributes: ['name', 'fullName'],
+      where: {
+        [key]: [value],
+      },
+    });
+    return result[0];
+  }
+  return {
+    error: 'Invalid key',
+  };
+}
+
+module.exports = { COMPANY_LIST, getCompanies, getCompanyByAttribute };
