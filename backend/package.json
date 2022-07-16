@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch --coverage",
+    "test": "set NODE_ENV=test && npm run restore-test && jest --watch --coverage",
+    "restore":"npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all",
+    "restore-test":"npx sequelize db:migrate:undo:all --env test && npx sequelize db:migrate --env test && npx sequelize db:seed:all --env test",
     "dev": "nodemon src/index.js",
     "generator": "node ./src/data/converter.js"
   },
@@ -12,7 +14,8 @@
   "author": "",
   "license": "ISC",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+     "collectCoverageFrom": ["src/**/*.js"]
   },
   "devDependencies": {
     "eslint": "^8.19.0",

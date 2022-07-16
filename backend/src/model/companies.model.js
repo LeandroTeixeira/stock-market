@@ -1,4 +1,5 @@
 const { Company } = require('../../models/index');
+const stocksModel = require('./stocks.model');
 
 const COMPANY_LIST = [
   {
@@ -644,6 +645,7 @@ async function getCompanyByAttribute(key, value) {
         [key]: [value],
       },
     });
+    if (result.length === 0) return { error: 'Not Found.' };
     return result[0];
   }
   return {
@@ -651,4 +653,60 @@ async function getCompanyByAttribute(key, value) {
   };
 }
 
-module.exports = { COMPANY_LIST, getCompanies, getCompanyByAttribute };
+async function getStockPriceFactory(referenceDay = Date.now()) {
+  let day = new Date(referenceDay);
+  day.setHours(0, 0, 0, 0);
+  const memo = {
+    [day.valueOf()]: { companies: [] },
+  };
+  async function getStockPrice(companyName, stockDay = Date.now()) {
+    day = new Date(stockDay);
+    day.setHours(0, 0, 0, 0);
+    if (!(day.valueOf() in memo)) {
+      memo[day.valueOf()] = { companies: [] };
+    }
+
+    const company = await getCompanyByAttribute('name', companyName);
+    if (company.error) return company;
+
+    let companyMemo = memo[day.valueOf()].companies.find((c) => c.name === company.name);
+    let messageMemo;
+
+    if (!companyMemo) {
+      const stockData = await stocksModel.getStock(company);
+      companyMemo = { ...stockData };
+      memo[day.valueOf()].companies.push(companyMemo);
+      messageMemo = 'Calculated';
+    } else messageMemo = 'Memoized';
+
+    const now = new Date(stockDay);
+
+    if (now.getHours() < 10) return { messageMemo, memo, stockPrice: companyMemo.open };
+    if (now.getHours() > 18) return { messageMemo, memo, stockPrice: companyMemo.close };
+    if (now.getHours() === companyMemo.lowHour) {
+      return {
+        messageMemo,
+        memo,
+        stockPrice: companyMemo.low,
+      };
+    }
+    if (now.getHours() === companyMemo.highHour) {
+      return { messageMemo, memo, stockPrice: companyMemo.high };
+    }
+    return {
+      messageMemo,
+      memo,
+      stockPrice: Math.random() * (companyMemo.high - companyMemo.low) + companyMemo.low,
+    };
+  }
+
+  return getStockPrice;
+}
+
+module.exports = {
+  COMPANY_LIST,
+  getCompanies,
+  getCompanyByAttribute,
+  getStockPriceFactory,
+
+};

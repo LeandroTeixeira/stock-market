@@ -21,15 +21,12 @@ module.exports = {
         type: Sequelize.STRING,
       },
       isRoot: {
-        allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: false,
-
+        allowNull: false,
       },
       risk: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
-
       },
       funds: {
         type: Sequelize.FLOAT,

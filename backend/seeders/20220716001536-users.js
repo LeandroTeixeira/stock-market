@@ -16,6 +16,19 @@ module.exports = {
         updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);
+    if (process.env.NODE_ENV === 'test') {
+      await queryInterface.bulkInsert('Users', [
+        {
+          name: 'Leandro Teixeira',
+          email: 'leandroteixeira3@gmail.com',
+          password: 'kjkszpj1',
+          isRoot: false,
+          funds: 5000,
+          createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+          updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+        },
+      ]);
+    }
   },
 
   async down(queryInterface, Sequelize) {

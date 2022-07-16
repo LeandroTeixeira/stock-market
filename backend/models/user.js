@@ -3,10 +3,7 @@ const User = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    isRoot: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
+    isRoot: DataTypes.BOOLEAN,
     risk: {
       type: DataTypes.INTEGER,
       defaultValue: 0,

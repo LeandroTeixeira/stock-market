@@ -2,7 +2,7 @@ const Stock = (sequelize, DataTypes) => {
   const stock = sequelize.define('Stock', {
     ownerId: {
       type: DataTypes.NUMBER,
-      defaultValue: 0,
+      defaultValue: 1,
     },
     companyId: DataTypes.NUMBER,
   });

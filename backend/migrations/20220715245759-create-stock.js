@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'SET DEFAULT',
-        defaultValue: 0,
+        defaultValue: 1,
         field: 'owner_id',
         // Informa que o campo é uma Foreign Key (Chave estrangeira)
         references: {
