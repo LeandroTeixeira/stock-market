@@ -1,14 +1,15 @@
 const COMPANY_LIST = [
   {
+    name: 'A',
+    fullName: 'Agilent Technologies Inc',
+  },
+  {
     name: 'AA',
     fullName: 'Alcoa Corp',
   },
   {
     name: 'AAC',
     fullName: 'Ares Acquisition Corp',
-  }, {
-    name: 'A',
-    fullName: 'Agilent Technologies Inc',
   }, {
     name: 'AAC',
     fullName: 'Ares Acquisition Corp',
