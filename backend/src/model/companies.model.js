@@ -647,7 +647,7 @@ async function getCompanyByAttribute(key, value) {
     return result[0];
   }
   return {
-    error: 'Invalid key',
+    error: 'Invalid key.',
   };
 }
 
