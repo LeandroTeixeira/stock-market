@@ -7,7 +7,7 @@ const CLOSE = 75;
 const LOW_HOUR = 12;
 const HIGH_HOUR = 16;
 
-const defaultAttributes = ['ownerId', 'companyId'];
+const defaultAttributes = ['id', 'ownerId', 'companyId'];
 
 async function getStocksByAttribute(key, value) {
   if (Object.keys(Stock.rawAttributes).find((k) => k === key)) {
@@ -18,12 +18,10 @@ async function getStocksByAttribute(key, value) {
         [key]: [value],
       },
     });
-    if (result.length === 0) return { error: 'Not Found.' };
+    if (result.length === 0) throw new Error('Not Found.');
     return result;
   }
-  return {
-    error: 'Invalid key.',
-  };
+  throw new Error('Invalid key.');
 }
 
 async function getStocks() {
@@ -31,8 +29,9 @@ async function getStocks() {
   return results;
 }
 
+// eslint-disable-next-line no-unused-vars
 async function getStockFromDay(company, day = Date.now()) {
-  return 'Unsupported Operation';
+  throw new Error('Unsupported Operation.');
   // return {
   //   name: company.name,
   //   fullName: company.fullName,
@@ -83,7 +82,30 @@ async function getTotalStocksFromCompany(id) {
   return ownedStocks.reduce((value, { owned }) => value + owned, 0);
 }
 
-async function transferOwnership(sellerId, buyerId, companyId) {}
+async function transferOwnership(sellerId, buyerId, cId, qty) {
+  const owned = (await getStocksFromOwner(sellerId));
+  const ownedSeller = owned.filter(({ companyId }) => companyId === cId);
+
+  if (sellerId === buyerId) throw new Error('SellerId and buyerId can\'t be equal.');
+  if (ownedSeller[0].owned < qty) throw new Error('Not enough stock to sell.');
+
+  const stockList = await getStocksByAttribute('ownerId', sellerId);
+  const stocksToSell = stockList.filter(({ companyId }) => companyId === cId);
+
+  const promiseList = [];
+  // return stocksToSell;
+  for (let i = 0; i < qty; i += 1) {
+    promiseList.push(
+      Stock.upsert({
+        id: stocksToSell[i].id,
+        ownerId: buyerId,
+        companyId: stocksToSell[i].companyId,
+      }),
+    );
+  }
+  await Promise.all(promiseList);
+  return { message: 'Stocks succesfully transferred.' };
+}
 
 module.exports = {
   getStockFromDay,

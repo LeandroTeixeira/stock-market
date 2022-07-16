@@ -2,9 +2,9 @@ const sinon = require('sinon');
 
 const { sequelize } = require('../models');
 const {
-  getStocks, getStocksByAttribute, getStocksByOwner,
+  getStocks, getStocksByAttribute, getStocksByOwner, getStockFromDay,
   getStocksFromOwner, getTotalStocksFromOwner, getStocksByCompany,
-  getStocksFromCompany, getTotalStocksFromCompany,
+  getStocksFromCompany, getTotalStocksFromCompany, transferOwnership,
 } = require('../src/model/stocks.model');
 
 require('dotenv').config();
@@ -124,32 +124,55 @@ describe('Stocks Model Test', () => {
     expect(total).toBe(22);
   });
 
-  it.skip('Test getTotalStocksFromOwner', async () => {
-    const owned1 = await getTotalStocksFromOwner(1);
-    expect(owned1).toHaveProperty('length');
-    expect(owned1[0]).toHaveProperty('ownerId');
-    expect(owned1[0]).toHaveProperty('companyId');
-    expect(owned1[0]).toHaveProperty('owned');
+  it('Test transferStock', async () => {
+    let ownedBuyer = await getStocksFromOwner(1);
+    ownedBuyer = ownedBuyer.filter(({ companyId }) => companyId === 22);
+    expect(ownedBuyer[0].owned).toBe(11);
 
-    const nonOwned1 = owned1.filter(({ ownerId }) => ownerId !== 1);
-    expect(nonOwned1.length).toBe(0);
+    let ownedSeller = await getStocksFromOwner(2);
+    ownedSeller = ownedSeller.filter(({ companyId }) => companyId === 22);
+    expect(ownedSeller[0].owned).toBe(11);
 
-    const all = await getStocksByOwner();
-    const allFiltered1 = all.filter(({ ownerId }) => ownerId === 1);
-    expect(allFiltered1.length).toBe(owned1.length);
+    let transfer = await transferOwnership(2, 1, 22, 10);
+    expect(transfer).toHaveProperty('message', 'Stocks succesfully transferred.');
 
-    const owned2 = await getStocksFromOwner(2);
-    expect(owned2).toHaveProperty('length');
-    expect(owned2[0]).toHaveProperty('ownerId');
-    expect(owned2[0]).toHaveProperty('companyId');
-    expect(owned2[0]).toHaveProperty('owned');
+    ownedBuyer = await getStocksFromOwner(1);
+    ownedBuyer = ownedBuyer.filter(({ companyId }) => companyId === 22);
+    expect(ownedBuyer[0].owned).toBe(21);
 
-    const nonOwned2 = owned2.filter(({ ownerId }) => ownerId !== 2);
-    expect(nonOwned2.length).toBe(0);
+    ownedSeller = await getStocksFromOwner(2);
+    ownedSeller = ownedSeller.filter(({ companyId }) => companyId === 22);
+    expect(ownedSeller[0].owned).toBe(1);
 
-    const allFiltered2 = all.filter(({ ownerId }) => ownerId === 2);
-    expect(allFiltered2.length).toBe(owned2.length);
+    transfer = await transferOwnership(1, 2, 22, 10);
+    expect(transfer).toHaveProperty('message', 'Stocks succesfully transferred.');
+    ownedBuyer = await getStocksFromOwner(1);
+    ownedBuyer = ownedBuyer.filter(({ companyId }) => companyId === 22);
+    expect(ownedBuyer[0].owned).toBe(11);
 
-    expect(owned1.length + owned2.length).toBe(all.length);
+    ownedSeller = await getStocksFromOwner(2);
+    ownedSeller = ownedSeller.filter(({ companyId }) => companyId === 22);
+    expect(ownedSeller[0].owned).toBe(11);
+  });
+
+  it('Test Error Handling', async () => {
+    await expect(async () => { await transferOwnership(2, 1, 22, 100); })
+      .rejects
+      .toThrow('Not enough stock to sell.');
+
+    await expect(async () => { await transferOwnership(1, 1, 22, 1); })
+      .rejects
+      .toThrow('SellerId and buyerId can\'t be equal.');
+
+    await expect(async () => { await getStocksByAttribute('test', 1); })
+      .rejects
+      .toThrow('Invalid key.');
+    await expect(async () => { await getStocksByAttribute('id', -1); })
+      .rejects
+      .toThrow('Not Found.');
+
+    await expect(async () => { await getStockFromDay(new Date(Date.now())); })
+      .rejects
+      .toThrow('Unsupported Operation.');
   });
 });
