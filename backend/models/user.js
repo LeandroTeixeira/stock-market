@@ -17,7 +17,7 @@ const User = (sequelize, DataTypes) => {
   user.associate = (models) => {
     user.hasMany(
       models.Stock,
-      { foreignKey: 'ownerId', as: 'users' },
+      { foreignKey: 'owner_id', as: 'users' },
     );
   };
   return user;

@@ -6,7 +6,7 @@ const Company = (sequelize, DataTypes) => {
   company.associate = (models) => {
     company.hasMany(
       models.Stock,
-      { foreignKey: 'companyId', as: 'companies' },
+      { foreignKey: 'company_id', as: 'companies' },
     );
   };
   return company;

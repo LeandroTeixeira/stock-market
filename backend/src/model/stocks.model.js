@@ -1,3 +1,5 @@
+const { Stock, sequelize } = require('../../models/index');
+
 const HIGH = 100;
 const LOW = 50;
 const OPEN = 75;
@@ -5,7 +7,31 @@ const CLOSE = 75;
 const LOW_HOUR = 12;
 const HIGH_HOUR = 16;
 
-async function getStock(company, day = Date.now()) {
+const defaultAttributes = ['ownerId', 'companyId'];
+
+async function getStocksByAttribute(key, value) {
+  if (Object.keys(Stock.rawAttributes).find((k) => k === key)) {
+    const result = await Stock.findAll({
+      raw: true,
+      attributes: defaultAttributes,
+      where: {
+        [key]: [value],
+      },
+    });
+    if (result.length === 0) return { error: 'Not Found.' };
+    return result;
+  }
+  return {
+    error: 'Invalid key.',
+  };
+}
+
+async function getStocks() {
+  const results = await Stock.findAll({ raw: true, attributes: defaultAttributes });
+  return results;
+}
+
+async function getStockFromDay(company, day = Date.now()) {
   return 'Unsupported Operation';
   // return {
   //   name: company.name,
@@ -17,8 +43,59 @@ async function getStock(company, day = Date.now()) {
   // };
 }
 
+async function getStocksBy(attribute) {
+  const group = (attribute === 'ownerId') ? ['ownerId', 'companyId'] : ['companyId', 'ownerId'];
+  const attributes = [...group, [sequelize.fn('COUNT', attribute), 'owned']];
+  const results = await Stock.findAll({
+    raw: true,
+    group,
+    attributes,
+    order: [attribute],
+  });
+  return results;
+}
+
+async function getStocksByOwner() {
+  const results = await getStocksBy('ownerId');
+  return results;
+}
+async function getStocksByCompany() {
+  const results = await getStocksBy('companyId');
+  return results;
+}
+
+async function getStocksFromOwner(id) {
+  const groupedStocks = await getStocksByOwner();
+  return groupedStocks.filter(({ ownerId }) => ownerId === id);
+}
+
+async function getStocksFromCompany(id) {
+  const groupedStocks = await getStocksByCompany();
+  return groupedStocks.filter(({ companyId }) => companyId === id);
+}
+
+async function getTotalStocksFromOwner(id) {
+  const ownedStocks = await getStocksFromOwner(id);
+  return ownedStocks.reduce((value, { owned }) => value + owned, 0);
+}
+async function getTotalStocksFromCompany(id) {
+  const ownedStocks = await getStocksFromCompany(id);
+  return ownedStocks.reduce((value, { owned }) => value + owned, 0);
+}
+
+async function transferOwnership(sellerId, buyerId, companyId) {}
+
 module.exports = {
-  getStock,
+  getStockFromDay,
+  getStocks,
+  getStocksByAttribute,
+  getStocksByOwner,
+  getStocksByCompany,
+  getStocksFromCompany,
+  getStocksFromOwner,
+  getTotalStocksFromOwner,
+  getTotalStocksFromCompany,
+  transferOwnership,
   HIGH,
   LOW,
   CLOSE,

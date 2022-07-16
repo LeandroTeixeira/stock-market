@@ -673,7 +673,7 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
     let messageMemo;
 
     if (!companyMemo) {
-      const stockData = await stocksModel.getStock(company);
+      const stockData = await stocksModel.getStockFromDay(company);
       companyMemo = { ...stockData };
       memo[day.valueOf()].companies.push(companyMemo);
       messageMemo = 'Calculated';

@@ -3,21 +3,25 @@ const Stock = (sequelize, DataTypes) => {
     ownerId: {
       type: DataTypes.NUMBER,
       defaultValue: 1,
+      field: 'owner_id',
     },
-    companyId: DataTypes.NUMBER,
+    companyId: {
+      type: DataTypes.NUMBER,
+      field: 'company_id',
+    },
   });
 
   Stock.associate = (models) => {
     Stock.belongsTo(
       models.User,
-      { foreignKey: 'ownerId', as: 'owner' },
+      { foreignKey: 'owner_id', as: 'owner' },
     );
   };
 
   Stock.associate = (models) => {
     Stock.belongsTo(
       models.Company,
-      { foreignKey: 'companyId', as: 'company' },
+      { foreignKey: 'company_id', as: 'company' },
     );
   };
   return stock;
