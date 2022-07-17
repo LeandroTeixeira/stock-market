@@ -1,7 +1,10 @@
 const User = (sequelize, DataTypes) => {
   const user = sequelize.define('User', {
     name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
     password: DataTypes.STRING,
     isRoot: DataTypes.BOOLEAN,
     risk: {

@@ -632,15 +632,53 @@ const COMPANY_LIST = [
   }];
 
 async function getCompanies() {
-  const results = await Company.findAll({ raw: true, attributes: ['name', 'fullName'] });
+  const results = await Company.findAll({ attributes: ['name', 'fullName'] });
   return results;
+}
+
+async function get(day) {
+  return COMPANY_LIST.map((company, index) => ({
+    name: company.name,
+    fullName: company.fullName,
+    open: stocksModel.OPEN * (0.9 + ((index % 20) / 100)) * day,
+    high: stocksModel.HIGH * (0.9 + ((index % 20) / 100)) * day,
+    low: stocksModel.LOW * (1 - index / 400) * (0.9 + ((index % 20) / 100)) * day,
+    close: stocksModel.CLOSE * (0.9 + ((index % 20) / 100)) * day,
+  }));
+}
+
+async function getTrends(days) {
+  const current = await get(0);
+  const past = await get(days);
+  const trends = [];
+  for (let i = 0; i < current.length; i += 1) {
+    const [currentAvg, pastAvg] = [(current[i].high + current[i].low) / 2,
+      (past[i].high + past[i].low) / 2];
+    trends.push({
+      name: current[i].name,
+      fullName: current[i].fullName,
+      absoluteVariation: currentAvg - pastAvg,
+      relativeVariation: currentAvg / pastAvg,
+    });
+  }
+  return trends;
+}
+
+async function getTrendingCompanies(days, amount) {
+  const trends = await getTrends(days);
+  trends.sort((a, b) => a.absoluteVariation - b.absoluteVariation);
+  const [worstAbsolute, bestAbsolute] = [trends.slice(0, amount), trends.slice(amount * (-1))];
+  trends.sort((a, b) => a.relativeVariation - b.relativeVariation);
+  const [worstRelative, bestRelative] = [trends.slice(0, amount), trends.slice(amount * (-1))];
+  return {
+    worstRelative, bestRelative, worstAbsolute, bestAbsolute,
+  };
 }
 
 async function getCompanyByAttribute(key, value) {
   if (Object.keys(Company.rawAttributes).find((k) => k === key)) {
     const result = await Company.findAll({
-      raw: true,
-      attributes: ['name', 'fullName'],
+      attributes: ['id', 'name', 'fullName'],
       where: {
         [key]: [value],
       },
@@ -659,14 +697,14 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
   const memo = {
     [day.valueOf()]: { companies: [] },
   };
-  async function getStockPrice(companyName, stockDay = Date.now()) {
+  async function getStockPrice({ key, value }, stockDay = Date.now()) {
     day = new Date(stockDay);
     day.setHours(0, 0, 0, 0);
     if (!(day.valueOf() in memo)) {
       memo[day.valueOf()] = { companies: [] };
     }
 
-    const company = await getCompanyByAttribute('name', companyName);
+    const company = await getCompanyByAttribute(key, value);
     if (company.error) return company;
 
     let companyMemo = memo[day.valueOf()].companies.find((c) => c.name === company.name);
@@ -680,7 +718,6 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
     } else messageMemo = 'Memoized';
 
     const now = new Date(stockDay);
-
     if (now.getHours() < 10) return { messageMemo, memo, stockPrice: companyMemo.open };
     if (now.getHours() > 18) return { messageMemo, memo, stockPrice: companyMemo.close };
     if (now.getHours() === companyMemo.lowHour) {
@@ -708,5 +745,5 @@ module.exports = {
   getCompanies,
   getCompanyByAttribute,
   getStockPriceFactory,
-
+  getTrendingCompanies,
 };

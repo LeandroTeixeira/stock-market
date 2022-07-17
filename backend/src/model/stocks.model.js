@@ -1,4 +1,5 @@
 const { Stock, sequelize } = require('../../models/index');
+const usersModel = require('./users.model');
 
 const HIGH = 100;
 const LOW = 50;
@@ -12,7 +13,6 @@ const defaultAttributes = ['id', 'ownerId', 'companyId'];
 async function getStocksByAttribute(key, value) {
   if (Object.keys(Stock.rawAttributes).find((k) => k === key)) {
     const result = await Stock.findAll({
-      raw: true,
       attributes: defaultAttributes,
       where: {
         [key]: [value],
@@ -25,7 +25,7 @@ async function getStocksByAttribute(key, value) {
 }
 
 async function getStocks() {
-  const results = await Stock.findAll({ raw: true, attributes: defaultAttributes });
+  const results = await Stock.findAll({ attributes: defaultAttributes });
   return results;
 }
 
@@ -46,7 +46,6 @@ async function getStocksBy(attribute) {
   const group = (attribute === 'ownerId') ? ['ownerId', 'companyId'] : ['companyId', 'ownerId'];
   const attributes = [...group, [sequelize.fn('COUNT', attribute), 'owned']];
   const results = await Stock.findAll({
-    raw: true,
     group,
     attributes,
     order: [attribute],
@@ -82,18 +81,24 @@ async function getTotalStocksFromCompany(id) {
   return ownedStocks.reduce((value, { owned }) => value + owned, 0);
 }
 
-async function transferOwnership(sellerId, buyerId, cId, qty) {
+async function transferOwnership({
+  sellerId, buyerId, cId, qty, getStockPrice,
+}) {
   const owned = (await getStocksFromOwner(sellerId));
   const ownedSeller = owned.filter(({ companyId }) => companyId === cId);
 
   if (sellerId === buyerId) throw new Error('SellerId and buyerId can\'t be equal.');
   if (ownedSeller[0].owned < qty) throw new Error('Not enough stock to sell.');
+  let price = await getStockPrice({ key: 'id', value: cId });
+
+  price = price.stockPrice * qty;
+  await usersModel.transferFunds(buyerId, sellerId, price);
 
   const stockList = await getStocksByAttribute('ownerId', sellerId);
   const stocksToSell = stockList.filter(({ companyId }) => companyId === cId);
 
   const promiseList = [];
-  // return stocksToSell;
+
   for (let i = 0; i < qty; i += 1) {
     promiseList.push(
       Stock.upsert({

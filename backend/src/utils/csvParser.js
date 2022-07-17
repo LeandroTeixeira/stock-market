@@ -15,7 +15,6 @@ function parseCSV(path) {
     });
     return resul;
   } catch (err) {
-    console.log(err);
     return { error: err.message };
   }
 }
