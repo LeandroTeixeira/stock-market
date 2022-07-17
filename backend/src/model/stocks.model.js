@@ -42,6 +42,21 @@ async function getStockFromDay(company, day = Date.now()) {
   // };
 }
 
+async function getAllStocksFromDay(companyList, day) {
+  return companyList.map(async (company) => {
+    const stock = await getStockFromDay(company, day);
+    return stock;
+  });
+  // return {
+  //   name: company.name,
+  //   fullName: company.fullName,
+  //   open: OPEN,f
+  //   high: HIGH,
+  //   low: LOW,
+  //   close: CLOSE,
+  // };
+}
+
 async function getStocksBy(attribute) {
   const group = (attribute === 'ownerId') ? ['ownerId', 'companyId'] : ['companyId', 'ownerId'];
   const attributes = [...group, [sequelize.fn('COUNT', attribute), 'owned']];
@@ -114,6 +129,7 @@ async function transferOwnership({
 
 module.exports = {
   getStockFromDay,
+  getAllStocksFromDay,
   getStocks,
   getStocksByAttribute,
   getStocksByOwner,

@@ -12,9 +12,11 @@ describe('Companies Model Test', () => {
   afterAll(() => {
     sequelize.close();
   });
+
   afterEach(() => {
     sinon.restore();
   });
+
   it('Test getAllCompanies', async () => {
     const returned = await getCompanies();
     expect(returned).toEqual(COMPANY_LIST);
@@ -30,35 +32,20 @@ describe('Companies Model Test', () => {
     expect(getByFullName).toEqual({ id: 3, ...tester });
   });
 
-  it('Test error cases', async () => {
-    error = await getCompanyByAttribute(3, 3);
-    expect(error).toHaveProperty('error', 'Invalid key.');
-    error = await getCompanyByAttribute('name', 'babaca de abada');
-    expect(error).toHaveProperty('error', 'Not Found.');
-  });
-
   it('Test stock price - Memo', async () => {
     const getStockStub = sinon.stub(stocks, 'getStockFromDay');
-    getStockStub.withArgs({ id: 1, ...COMPANY_LIST[0] }).resolves({
-      name: COMPANY_LIST[0].name,
-      fullName: COMPANY_LIST[0].fullName,
-      open: stocks.OPEN,
-      high: stocks.HIGH,
-      low: stocks.LOW,
-      close: stocks.CLOSE,
-      lowHour: stocks.LOW_HOUR,
-      highHour: stocks.HIGH_HOUR,
-    });
-    getStockStub.withArgs({ id: 2, ...COMPANY_LIST[1] }).resolves({
-      name: COMPANY_LIST[1].name,
-      fullName: COMPANY_LIST[1].fullName,
-      open: stocks.OPEN,
-      high: stocks.HIGH,
-      low: stocks.LOW,
-      close: stocks.CLOSE,
-      lowHour: stocks.LOW_HOUR,
-      highHour: stocks.HIGH_HOUR,
-    });
+    for (let i = 0; i < 2; i += 1) {
+      getStockStub.withArgs({ id: i + 1, ...COMPANY_LIST[i] }).resolves({
+        name: COMPANY_LIST[i].name,
+        fullName: COMPANY_LIST[i].fullName,
+        open: stocks.OPEN,
+        high: stocks.HIGH,
+        low: stocks.LOW,
+        close: stocks.CLOSE,
+        lowHour: stocks.LOW_HOUR,
+        highHour: stocks.HIGH_HOUR,
+      });
+    }
     const getStockPrice = await getStockPriceFactory();
     const today = new Date(Date.now());
     today.setHours(0, 0, 0, 0);
@@ -92,26 +79,18 @@ describe('Companies Model Test', () => {
 
   it('Test stock price - Time', async () => {
     const getStockStub = sinon.stub(stocks, 'getStockFromDay');
-    getStockStub.withArgs({ id: 1, ...COMPANY_LIST[0] }).resolves({
-      name: COMPANY_LIST[0].name,
-      fullName: COMPANY_LIST[0].fullName,
-      open: stocks.OPEN,
-      high: stocks.HIGH,
-      low: stocks.LOW,
-      close: stocks.CLOSE,
-      lowHour: stocks.LOW_HOUR,
-      highHour: stocks.HIGH_HOUR,
-    });
-    getStockStub.withArgs({ id: 2, ...COMPANY_LIST[1] }).resolves({
-      name: COMPANY_LIST[1].name,
-      fullName: COMPANY_LIST[1].fullName,
-      open: stocks.OPEN,
-      high: stocks.HIGH,
-      low: stocks.LOW,
-      close: stocks.CLOSE,
-      lowHour: stocks.LOW_HOUR,
-      highHour: stocks.HIGH_HOUR,
-    });
+    for (let i = 0; i < 2; i += 1) {
+      getStockStub.withArgs({ id: i + 1, ...COMPANY_LIST[i] }).resolves({
+        name: COMPANY_LIST[i].name,
+        fullName: COMPANY_LIST[i].fullName,
+        open: stocks.OPEN,
+        high: stocks.HIGH,
+        low: stocks.LOW,
+        close: stocks.CLOSE,
+        lowHour: stocks.LOW_HOUR,
+        highHour: stocks.HIGH_HOUR,
+      });
+    }
     const getStockPrice = await getStockPriceFactory();
     const [day1, auxDay1] = [new Date('2017-12-12T02:00:00'), new Date('2017-12-12T00:00:00')];
     const [day2, auxDay2] = [new Date(`2018-12-12T${stocks.LOW_HOUR}:00:00`), new Date('2018-12-12T00:00:00')];
@@ -167,12 +146,34 @@ describe('Companies Model Test', () => {
     expect(stock.memo[auxDay3.valueOf()].companies[1].fullName).toBe(COMPANY_LIST[0].fullName);
   });
   it('Test stock price - Error', async () => {
-    const getStockPrice = await getStockPriceFactory();
-    const error = await getStockPrice({ key: 'name', value: 'Babaca de abada' });
-    expect(error).toHaveProperty('error', 'Not Found.');
+
   });
 
   it('Test trending companies', async () => {
+    const getStockStub = sinon.stub(stocks, 'getAllStocksFromDay');
+    const companyList = await getCompanies();
+    getStockStub.withArgs(companyList).returns(
+      COMPANY_LIST.map((company, index) => ({
+        name: company.name,
+        fullName: company.fullName,
+        open: stocks.OPEN * (0.9 + ((index % 20) / 100)),
+        high: stocks.HIGH * (0.9 + ((index % 20) / 100)),
+        low: stocks.LOW * (1 - index / 400) * (0.9 + ((index % 20) / 100)),
+        close: stocks.CLOSE * (0.9 + ((index % 20) / 100)),
+      })),
+    );
+
+    getStockStub.withArgs(companyList, 30).returns(
+      COMPANY_LIST.map((company, index) => ({
+        name: company.name,
+        fullName: company.fullName,
+        open: stocks.OPEN * (0.9 + ((index % 20) / 100)) * 31,
+        high: stocks.HIGH * (0.9 + ((index % 20) / 100)) * 31,
+        low: stocks.LOW * (1 - index / 400) * (0.9 + ((index % 20) / 100)) * 31,
+        close: stocks.CLOSE * (0.9 + ((index % 20) / 100)) * 31,
+      })),
+    );
+
     const trends = await getTrendingCompanies(30, 10);
     expect(trends).toHaveProperty('bestAbsolute');
     expect(trends).toHaveProperty('worstAbsolute');
@@ -208,5 +209,27 @@ describe('Companies Model Test', () => {
       expect(trends.worstRelative[i].relativeVariation)
         .toBeLessThanOrEqual(trends.worstRelative[i + 1].relativeVariation);
     }
+  });
+
+  it('Test error cases', async () => {
+    const getStockPrice = await getStockPriceFactory();
+
+    await expect(async () => {
+      await await getStockPrice({ key: 'name', value: 'Babaca de abada' });
+    })
+      .rejects
+      .toThrow('Not Found.');
+
+    await expect(async () => {
+      await getCompanyByAttribute(3, 3);
+    })
+      .rejects
+      .toThrow('Invalid key.');
+
+    await expect(async () => {
+      await getCompanyByAttribute('name', 'babaca de abada');
+    })
+      .rejects
+      .toThrow('Not Found.');
   });
 });

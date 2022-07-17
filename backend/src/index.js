@@ -1,10 +1,17 @@
-const { getCompanies, getCompanyByAttribute } = require('./model/companies.model');
+const http = require('http');
 
-require('dotenv').config();
+const app = require('./app');
+// const { mongoConnect } = require('./services/mongo');
 
-async function test() {
-  const c = await getCompanyByAttribute('id', 1);
-  console.log(c);
-}
+const PORT = process.env.PORT || 8000;
 
-test();
+const server = http.createServer(app);
+
+(async function startServer() {
+  // await mongoConnect();
+  // await loadPlanetsData();
+
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}());

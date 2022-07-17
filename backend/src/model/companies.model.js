@@ -636,20 +636,22 @@ async function getCompanies() {
   return results;
 }
 
-async function get(day) {
-  return COMPANY_LIST.map((company, index) => ({
-    name: company.name,
-    fullName: company.fullName,
-    open: stocksModel.OPEN * (0.9 + ((index % 20) / 100)) * day,
-    high: stocksModel.HIGH * (0.9 + ((index % 20) / 100)) * day,
-    low: stocksModel.LOW * (1 - index / 400) * (0.9 + ((index % 20) / 100)) * day,
-    close: stocksModel.CLOSE * (0.9 + ((index % 20) / 100)) * day,
-  }));
-}
+// async function get(day) {
+//   return COMPANY_LIST.map((company, index) => ({
+//     name: company.name,
+//     fullName: company.fullName,
+//     open: stocksModel.OPEN * (0.9 + ((index % 20) / 100)) * day,
+//     high: stocksModel.HIGH * (0.9 + ((index % 20) / 100)) * day,
+//     low: stocksModel.LOW * (1 - index / 400) * (0.9 + ((index % 20) / 100)) * day,
+//     close: stocksModel.CLOSE * (0.9 + ((index % 20) / 100)) * day,
+//   }));
+// }
 
 async function getTrends(days) {
-  const current = await get(0);
-  const past = await get(days);
+  const day = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  const companies = await getCompanies();
+  const current = await stocksModel.getAllStocksFromDay(companies);
+  const past = await stocksModel.getAllStocksFromDay(companies, day);
   const trends = [];
   for (let i = 0; i < current.length; i += 1) {
     const [currentAvg, pastAvg] = [(current[i].high + current[i].low) / 2,
@@ -683,12 +685,10 @@ async function getCompanyByAttribute(key, value) {
         [key]: [value],
       },
     });
-    if (result.length === 0) return { error: 'Not Found.' };
+    if (result.length === 0) throw new Error('Not Found.');
     return result[0];
   }
-  return {
-    error: 'Invalid key.',
-  };
+  throw new Error('Invalid key.');
 }
 
 async function getStockPriceFactory(referenceDay = Date.now()) {

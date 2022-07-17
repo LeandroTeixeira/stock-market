@@ -35,9 +35,9 @@ describe('Stocks Model Test', () => {
   });
 
   it('Upsert and Delete User', async () => {
-    const user = await usersModel.getUsersByAttribute('email', 'leandroteixeira3@gmail.com');
-    user[0].funds = 7500;
-    let newUser = await usersModel.upsertUser(user[0]);
+    const [user] = await usersModel.getUsersByAttribute('email', 'leandroteixeira3@gmail.com');
+    user.funds = 7500;
+    let newUser = await usersModel.upsertUser(user);
     expect(newUser).toHaveProperty('message', 'User succesfully updated.');
     expect(newUser).toHaveProperty('user');
     expect(newUser.user.name).toEqual('Leandro Teixeira');
@@ -68,43 +68,44 @@ describe('Stocks Model Test', () => {
   });
 
   it('Transfer Funds', async () => {
-    seller = await usersModel.getUsersByAttribute('id', 1);
-    buyer = await usersModel.getUsersByAttribute('id', 2);
-    const fundsSeller = seller[0].funds;
-    const fundsBuyer = buyer[0].funds;
+    [seller] = await usersModel.getUsersByAttribute('id', 1);
+    [buyer] = await usersModel.getUsersByAttribute('id', 2);
+    const fundsSeller = seller.funds;
+    const fundsBuyer = buyer.funds;
 
     expect(fundsSeller).toBe(0);
     expect(fundsBuyer).toBe(5000);
 
-    let response = await usersModel.transferFunds(buyer[0].id, seller[0].id, 2000);
+    let response = await usersModel.transferFunds(buyer.id, seller.id, 2000);
     expect(response).toHaveProperty('message');
     expect(response.message).toBe('Funds were succesfully transferred.');
 
-    seller = await usersModel.getUsersByAttribute('id', 1);
-    buyer = await usersModel.getUsersByAttribute('id', 2);
-    expect(seller[0].funds - fundsSeller).toBe(2000);
-    expect(fundsBuyer - buyer[0].funds).toBe(2000);
+    [seller] = await usersModel.getUsersByAttribute('id', 1);
+    [buyer] = await usersModel.getUsersByAttribute('id', 2);
+    expect(seller.funds - fundsSeller).toBe(2000);
+    expect(fundsBuyer - buyer.funds).toBe(2000);
 
-    response = await usersModel.transferFunds(seller[0].id, buyer[0].id, 2000);
+    response = await usersModel.transferFunds(seller.id, buyer.id, 2000);
     expect(response).toHaveProperty('message');
     expect(response.message).toBe('Funds were succesfully transferred.');
-    seller = await usersModel.getUsersByAttribute('id', 1);
-    buyer = await usersModel.getUsersByAttribute('id', 2);
-    expect(seller[0].funds).toBe(fundsSeller);
-    expect(buyer[0].funds).toBe(fundsBuyer);
+
+    [seller] = await usersModel.getUsersByAttribute('id', 1);
+    [buyer] = await usersModel.getUsersByAttribute('id', 2);
+    expect(seller.funds).toBe(fundsSeller);
+    expect(buyer.funds).toBe(fundsBuyer);
   });
 
   it('Deposit and Withdraw', async () => {
-    let user = await usersModel.getUsersByAttribute('id', 2);
-    const { funds } = user[0];
+    let [user] = await usersModel.getUsersByAttribute('id', 2);
+    const { funds } = user;
     expect(funds).toBe(5000);
     await usersModel.withdraw({ key: 'id', value: 2 }, 5000);
-    user = await usersModel.getUsersByAttribute('id', 2);
-    expect(user[0].funds).toBe(0);
+    [user] = await usersModel.getUsersByAttribute('id', 2);
+    expect(user.funds).toBe(0);
 
     await usersModel.deposit({ key: 'id', value: 2 }, 5000);
-    user = await usersModel.getUsersByAttribute('id', 2);
-    expect(user[0].funds).toBe(5000);
+    [user] = await usersModel.getUsersByAttribute('id', 2);
+    expect(user.funds).toBe(5000);
   });
 
   it('Error handling', async () => {
