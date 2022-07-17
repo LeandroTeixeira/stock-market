@@ -14,7 +14,7 @@ describe('Stocks Model Test', () => {
     sinon.restore();
   });
 
-  it('GetUsersByAttribute', async () => {
+  it('Users Model: GetUsersByAttribute', async () => {
     let users = await usersModel.getUsersByAttribute('email', 'leandroteixeira3@gmail.com');
     expect(users.length).toBe(1);
     expect(users[0].name).toEqual('Leandro Teixeira');
@@ -24,7 +24,7 @@ describe('Stocks Model Test', () => {
     expect(users[0].funds).toEqual(0);
   });
 
-  it('GetUsersByTwoAttributes', async () => {
+  it('Users Model: GetUsersByTwoAttributes', async () => {
     let users = await usersModel.getUsersByTwoAttributes('email', 'leandroteixeira3@gmail.com', 'password', 'kjkszpj1');
     expect(users.length).toBe(1);
     expect(users[0].name).toEqual('Leandro Teixeira');
@@ -34,7 +34,7 @@ describe('Stocks Model Test', () => {
     expect(users[0].funds).toEqual(0);
   });
 
-  it('Upsert and Delete User', async () => {
+  it('Users Model: Upsert and Delete User', async () => {
     const [user] = await usersModel.getUsersByAttribute('email', 'leandroteixeira3@gmail.com');
     user.funds = 7500;
     let newUser = await usersModel.upsertUser(user);
@@ -67,7 +67,7 @@ describe('Stocks Model Test', () => {
     expect(response.message).toEqual('User succesfully deleted.');
   });
 
-  it('Transfer Funds', async () => {
+  it('Users Model: Transfer Funds', async () => {
     [seller] = await usersModel.getUsersByAttribute('id', 1);
     [buyer] = await usersModel.getUsersByAttribute('id', 2);
     const fundsSeller = seller.funds;
@@ -95,7 +95,7 @@ describe('Stocks Model Test', () => {
     expect(buyer.funds).toBe(fundsBuyer);
   });
 
-  it('Deposit and Withdraw', async () => {
+  it('Users Model: Deposit and Withdraw', async () => {
     let [user] = await usersModel.getUsersByAttribute('id', 2);
     const { funds } = user;
     expect(funds).toBe(5000);
@@ -108,7 +108,7 @@ describe('Stocks Model Test', () => {
     expect(user.funds).toBe(5000);
   });
 
-  it('Error handling', async () => {
+  it('Users Model: Error handling', async () => {
     await expect(async () => {
       await usersModel.getUsersByAttribute('id', -1);
     })

@@ -2,6 +2,7 @@ const sinon = require('sinon');
 
 const { sequelize } = require('../models');
 const stocks = require('../src/model/stocks.model');
+const timeStocks = require('../src/model/timeStocks.model');
 const {
   COMPANY_LIST,
 } = require('../src/model/companies.model');
@@ -17,13 +18,13 @@ describe('Stocks Model Test', () => {
   });
   const getStockPrice = async () => ({ stockPrice: 100 });
 
-  it('Test getStocks', async () => {
+  it('Stocks Model: Test getStocks', async () => {
     const returned = await stocks.getStocks();
     expect(returned).toHaveProperty('length');
     expect(returned.length).toBeGreaterThanOrEqual(100);
   });
 
-  it('Test getStocksByAttribute', async () => {
+  it('Stocks Model: Test getStocksByAttribute', async () => {
     const getByOwner = await stocks.getStocksByAttribute('ownerId', 1);
 
     expect(getByOwner).toHaveProperty('length');
@@ -37,7 +38,7 @@ describe('Stocks Model Test', () => {
     expect(getByCompany.length).toBe(10);
   });
 
-  it('Test getStocksByOwner', async () => {
+  it('Stocks Model: Test getStocksByOwner', async () => {
     const returned = await stocks.getStocksByOwner();
     expect(returned).toHaveProperty('length');
     expect(returned[0]).toHaveProperty('ownerId');
@@ -52,7 +53,7 @@ describe('Stocks Model Test', () => {
     expect(total).toBe(getByCompany.length);
   });
 
-  it('Test getStocksFromOwner and getTotalStocksFromOwner', async () => {
+  it('Stocks Model: Test getStocksFromOwner and getTotalStocksFromOwner', async () => {
     const owned1 = await stocks.getStocksFromOwner(1);
     expect(owned1).toHaveProperty('length');
     expect(owned1[0]).toHaveProperty('ownerId');
@@ -97,7 +98,7 @@ describe('Stocks Model Test', () => {
     expect(total22).toBe(total23);
   });
 
-  it('Test getStocksByCompany', async () => {
+  it('Stocks Model: Test getStocksByCompany', async () => {
     const returned = await stocks.getStocksByCompany();
     expect(returned).toHaveProperty('length');
     expect(returned[0]).toHaveProperty('ownerId');
@@ -112,7 +113,7 @@ describe('Stocks Model Test', () => {
     expect(total).toBe(getByCompany.length);
   });
 
-  it('Test getStocksFromCompany and getTotalStocksFromCompany', async () => {
+  it('Stocks Model: Test getStocksFromCompany and getTotalStocksFromCompany', async () => {
     const own = await stocks.getStocksFromCompany(22);
     expect(own).toHaveProperty('length');
     expect(own[0]).toHaveProperty('ownerId');
@@ -125,8 +126,8 @@ describe('Stocks Model Test', () => {
     expect(total).toBe(22);
   });
 
-  it('Test transferStock', async () => {
-    const getStockStub = sinon.stub(stocks, 'getStockFromDay');
+  it('Stocks Model: Test transferStock', async () => {
+    const getStockStub = sinon.stub(timeStocks, 'getStockFromDay');
     sinon.stub(userModel, 'transferFunds');
     getStockStub.withArgs({ id: 22, ...COMPANY_LIST[21] }).resolves({
       name: COMPANY_LIST[21].name,
@@ -173,7 +174,7 @@ describe('Stocks Model Test', () => {
     expect(ownedSeller[0].owned).toBe(11);
   });
 
-  it('Test Error Handling', async () => {
+  it('Stocks Model: Test Error Handling', async () => {
     await expect(async () => {
       await stocks.transferOwnership({
         sellerId: 2, buyerId: 1, cId: 22, qty: 100, getStockPrice,
@@ -193,13 +194,10 @@ describe('Stocks Model Test', () => {
     await expect(async () => { await stocks.getStocksByAttribute('test', 1); })
       .rejects
       .toThrow('Invalid key.');
+
     await expect(async () => { await stocks.getStocksByAttribute('id', -1); })
       .rejects
       .toThrow('Not Found.');
     sinon.restore();
-
-    await expect(async () => { await stocks.getStockFromDay(new Date(Date.now())); })
-      .rejects
-      .toThrow('Unsupported Operation.');
   });
 });

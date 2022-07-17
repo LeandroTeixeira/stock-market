@@ -1,5 +1,5 @@
 const { Company } = require('../../models/index');
-const stocksModel = require('./stocks.model');
+const timeStocksModel = require('./timeStocks.model');
 
 const COMPANY_LIST = [
   {
@@ -77,14 +77,8 @@ const COMPANY_LIST = [
     name: 'ABT',
     fullName: 'Abbott Laboratories',
   }, {
-    name: 'ABTX',
-    fullName: 'Allegiance Bancshares Inc',
-  }, {
     name: 'ABUS',
     fullName: 'Arbutus Biopharma Corp',
-  }, {
-    name: 'AC',
-    fullName: 'Associated Capital Group Inc',
   }, {
     name: 'ACAD',
     fullName: 'ACADIA Pharmaceuticals Inc',
@@ -100,18 +94,12 @@ const COMPANY_LIST = [
   }, {
     name: 'ACGL',
     fullName: 'Arch Capital Group LTD',
-  }, {
-    name: 'ACGLO',
-    fullName: 'Arch Capital Group LTD',
   }, { name: 'ACH', fullName: 'Aluminium Corporation of China Ltd' }, {
     name: 'ACHC',
     fullName: 'Acadia Healthcare Company Inc',
   }, {
     name: 'ACHV',
     fullName: 'Achieve Life Sciences Inc',
-  }, {
-    name: 'ACIU',
-    fullName: 'AC Immune SA',
   }, {
     name: 'ACIW',
     fullName: 'ACI Worldwide Inc',
@@ -121,9 +109,6 @@ const COMPANY_LIST = [
   }, {
     name: 'ACM',
     fullName: 'AECOM',
-  }, {
-    name: 'ACMR',
-    fullName: 'ACM Research Inc',
   }, {
     name: 'ACN',
     fullName: 'Accenture',
@@ -140,14 +125,8 @@ const COMPANY_LIST = [
     name: 'ACRE',
     fullName: 'Ares Commercial Real State Corp',
   }, {
-    name: 'ACRS',
-    fullName: 'Aclaris Therapeutics Inc',
-  }, {
     name: 'ACRX',
     fullName: 'AcelRx Pharmaceuticals Inc',
-  }, {
-    name: 'ACSI',
-    fullName: 'American Customer Satisfaction ETF',
   }, {
     name: 'ACST',
     fullName: 'Acasti Pharma Inc',
@@ -158,23 +137,14 @@ const COMPANY_LIST = [
     name: 'ACU',
     fullName: 'Acme United Corp',
   }, {
-    name: 'ACV',
-    fullName: 'Virtus Diversified Income & Convertible Fund',
-  }, {
     name: 'ACXM',
     fullName: 'Alcoa Corp',
-  }, {
-    name: 'ADAP',
-    fullName: 'Adaptimmune Therapeutics PLC',
   }, {
     name: 'ADBE',
     fullName: 'Adobe',
   }, {
     name: 'ADC',
     fullName: 'Agree Realty Corp',
-  }, {
-    name: 'ADES',
-    fullName: 'Advanced Emission Solutions Inc',
   }, {
     name: 'ADI',
     fullName: 'Analog Devices Inc',
@@ -187,9 +157,6 @@ const COMPANY_LIST = [
   }, {
     name: 'ADMP',
     fullName: 'Adami Pharmaceuticals ',
-  }, {
-    name: 'ADNT',
-    fullName: 'Adient PLC',
   }, {
     name: 'ADP',
     fullName: 'Automatic Data Processing Inc',
@@ -223,9 +190,6 @@ const COMPANY_LIST = [
   }, {
     name: 'AEM',
     fullName: 'Agnico Eagle Mines LTD',
-  }, {
-    name: 'AEMD',
-    fullName: 'Aethlon Medical Inc',
   }, {
     name: 'AEO',
     fullName: 'American Eagle Outfitters Inc',
@@ -263,30 +227,8 @@ const COMPANY_LIST = [
     name: 'AFMD',
     fullName: 'Affimed NV',
   }, {
-    name: 'AFSI_A',
-    fullName: 'AmTrust Financial Services Inc',
-  }, {
-    name: 'AFSI_B',
-    fullName: 'AmTrust Financial Services Inc',
-  }, {
-    name: 'AFSI_C',
-    fullName: 'AmTrust Financial Services Inc',
-  }, {
-    name: 'AFSI_D',
-    fullName: 'AmTrust Financial Services Inc',
-  }, {
-    name: 'AFSI_E',
-    fullName: 'AmTrust Financial Services Inc',
-  },
-  {
-    name: 'AFSI_F',
-    fullName: 'AmTrust Financial Services Inc',
-  }, {
     name: 'AFT',
     fullName: 'Apollo Senior Floating Rate Fund',
-  }, {
-    name: 'AFTY',
-    fullName: 'Pacer CSOP FTSE China A50 ETF',
   }, {
     name: 'AG',
     fullName: 'First Majestic Silver Corp',
@@ -303,17 +245,11 @@ const COMPANY_LIST = [
     name: 'AGFS',
     fullName: 'AgroFresh Solutions Inc',
   }, {
-    name: 'AGGY',
-    fullName: 'WisdomTree Yield Enhanced U.S. Aggregate Bond Fund',
-  }, {
     name: 'AGI',
     fullName: 'Alamos Gold Inc',
   }, {
     name: 'AGIO',
     fullName: 'Agios Pharmaceutical Inc',
-  }, {
-    name: 'AGLE',
-    fullName: 'Aeglea Bio Thereapeutics Inc',
   }, {
     name: 'AGM',
     fullName: 'Federal Agricultural Mortgage Corp',
@@ -324,9 +260,6 @@ const COMPANY_LIST = [
     name: 'AGO',
     fullName: 'Assured Guranty Ltd',
   }, {
-    name: 'AGR',
-    fullName: 'Avangrid Inc',
-  }, {
     name: 'AGRO',
     fullName: 'Adecoagro SA',
   }, {
@@ -336,12 +269,6 @@ const COMPANY_LIST = [
     name: 'AGYS',
     fullName: 'Agylysis Inc',
   }, {
-    name: 'AHPA',
-    fullName: 'Avista Public Acquisition Corp',
-  }, {
-    name: 'AHPAU',
-    fullName: 'Avista Public Acquisition Corp',
-  }, {
     name: 'AHPI',
     fullName: 'Allied Healthcare Products Inc',
   }, {
@@ -350,12 +277,6 @@ const COMPANY_LIST = [
   }, {
     name: 'AI',
     fullName: 'C3.ai Inc',
-  }, {
-    name: 'AIC',
-    fullName: 'Arlington Asset Investment Corp',
-  }, {
-    name: 'AIEQ',
-    fullName: 'AI Powered Equity ETF',
   }, {
     name: 'AIF',
     fullName: 'Apollo Tactical Income Fund',
@@ -377,9 +298,6 @@ const COMPANY_LIST = [
   }, {
     name: 'AIR',
     fullName: 'AAR Corp',
-  }, {
-    name: 'AIRG',
-    fullName: 'Airgain Inc',
   }, {
     name: 'AIRI',
     fullName: 'Air Industries Group',
@@ -405,9 +323,6 @@ const COMPANY_LIST = [
     name: 'AJX',
     fullName: 'Great Ajax Corp',
   }, {
-    name: 'AJXA',
-    fullName: 'Great Ajax Corp',
-  }, {
     name: 'AKAM',
     fullName: 'Akamai Technologies Inc',
   }, {
@@ -422,9 +337,6 @@ const COMPANY_LIST = [
   }, {
     name: 'AKR',
     fullName: 'Akadia Realty Test',
-  }, {
-    name: 'AKTS',
-    fullName: 'Akoustis Technologies Inc',
   }, {
     name: 'AKTX',
     fullName: 'Akari Therapeutics PLC',
@@ -528,12 +440,6 @@ const COMPANY_LIST = [
     name: 'APT',
     fullName: 'Alpha Pro Tech LTD',
   }, {
-    name: 'AQB',
-    fullName: 'AquaBounty Technologies Inc',
-  }, {
-    name: 'AQN',
-    fullName: 'Algonquin Power & Utilities Corp',
-  }, {
     name: 'AR',
     fullName: 'Antero Resources Corp',
   }, {
@@ -560,9 +466,6 @@ const COMPANY_LIST = [
   }, {
     name: 'ASG',
     fullName: 'Liberty All-Star Growth',
-  }, {
-    name: 'ATH',
-    fullName: 'Athens Composite',
   }, {
     name: 'ATI',
     fullName: 'ATI Inc',
@@ -621,9 +524,6 @@ const COMPANY_LIST = [
     name: 'AYI',
     fullName: 'Acuity Brands Inc',
   }, {
-    name: 'AYX',
-    fullName: 'Alteryx Inc',
-  }, {
     name: 'AZO',
     fullName: 'Autozone Inc',
   }, {
@@ -650,8 +550,8 @@ async function getCompanies() {
 async function getTrends(days) {
   const day = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
   const companies = await getCompanies();
-  const current = await stocksModel.getAllStocksFromDay(companies);
-  const past = await stocksModel.getAllStocksFromDay(companies, day);
+  const current = await timeStocksModel.getAllStocksFromDay(companies);
+  const past = await timeStocksModel.getAllStocksFromDay(companies, day);
   const trends = [];
   for (let i = 0; i < current.length; i += 1) {
     const [currentAvg, pastAvg] = [(current[i].high + current[i].low) / 2,
@@ -711,7 +611,7 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
     let messageMemo;
 
     if (!companyMemo) {
-      const stockData = await stocksModel.getStockFromDay(company);
+      const stockData = await timeStocksModel.getStockFromDay(company);
       companyMemo = { ...stockData };
       memo[day.valueOf()].companies.push(companyMemo);
       messageMemo = 'Calculated';

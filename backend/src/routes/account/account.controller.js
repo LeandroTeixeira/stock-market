@@ -4,6 +4,7 @@ class AccountController {
   async withdraw(req, res) {
     const { valor } = req.body;
     const { user } = req;
+
     if (!valor || valor <= 0) return res.status(422).json({ message: 'Value is required and must be higher than 0' });
 
     try {

@@ -5,6 +5,7 @@ const {
   getCompanies, COMPANY_LIST, getCompanyByAttribute, getStockPriceFactory, getTrendingCompanies,
 } = require('../src/model/companies.model');
 const stocks = require('../src/model/stocks.model');
+const timeStocks = require('../src/model/timeStocks.model');
 
 require('dotenv').config();
 /* eslint-disable no-undef */
@@ -17,12 +18,12 @@ describe('Companies Model Test', () => {
     sinon.restore();
   });
 
-  it('Test getAllCompanies', async () => {
+  it('Companies Model: Test getAllCompanies', async () => {
     const returned = await getCompanies();
     expect(returned).toEqual(COMPANY_LIST);
   });
 
-  it('Test getCompanyByAttribute', async () => {
+  it('Companies Model: Test getCompanyByAttribute', async () => {
     const tester = COMPANY_LIST[2];
     const getById = await getCompanyByAttribute('id', 3);
     expect(getById).toEqual({ id: 3, ...tester });
@@ -32,8 +33,8 @@ describe('Companies Model Test', () => {
     expect(getByFullName).toEqual({ id: 3, ...tester });
   });
 
-  it('Test stock price - Memo', async () => {
-    const getStockStub = sinon.stub(stocks, 'getStockFromDay');
+  it('Companies Model: Test stock price - Memo', async () => {
+    const getStockStub = sinon.stub(timeStocks, 'getStockFromDay');
     for (let i = 0; i < 2; i += 1) {
       getStockStub.withArgs({ id: i + 1, ...COMPANY_LIST[i] }).resolves({
         name: COMPANY_LIST[i].name,
@@ -77,8 +78,8 @@ describe('Companies Model Test', () => {
     expect(stock.messageMemo).toBe('Memoized');
   });
 
-  it('Test stock price - Time', async () => {
-    const getStockStub = sinon.stub(stocks, 'getStockFromDay');
+  it('Companies Model: Test stock price - Time', async () => {
+    const getStockStub = sinon.stub(timeStocks, 'getStockFromDay');
     for (let i = 0; i < 2; i += 1) {
       getStockStub.withArgs({ id: i + 1, ...COMPANY_LIST[i] }).resolves({
         name: COMPANY_LIST[i].name,
@@ -102,6 +103,7 @@ describe('Companies Model Test', () => {
     expect(stock.stockPrice).toBe(stocks.OPEN);
     expect(stock.messageMemo).toBe('Calculated');
     stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name }, day2);
+    console.log(stock);
     expect(stock.stockPrice).toBe(stocks.LOW);
     expect(stock.messageMemo).toBe('Calculated');
     stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name }, day3);
@@ -145,12 +147,9 @@ describe('Companies Model Test', () => {
     expect(stock.memo[auxDay3.valueOf()].companies[1].name).toBe(COMPANY_LIST[0].name);
     expect(stock.memo[auxDay3.valueOf()].companies[1].fullName).toBe(COMPANY_LIST[0].fullName);
   });
-  it('Test stock price - Error', async () => {
 
-  });
-
-  it('Test trending companies', async () => {
-    const getStockStub = sinon.stub(stocks, 'getAllStocksFromDay');
+  it('Companies Model: Test trending companies', async () => {
+    const getStockStub = sinon.stub(timeStocks, 'getAllStocksFromDay');
     const companyList = await getCompanies();
     getStockStub.withArgs(companyList).returns(
       COMPANY_LIST.map((company, index) => ({
@@ -211,7 +210,7 @@ describe('Companies Model Test', () => {
     }
   });
 
-  it('Test error cases', async () => {
+  it('Companies Model: Test error cases', async () => {
     const getStockPrice = await getStockPriceFactory();
 
     await expect(async () => {

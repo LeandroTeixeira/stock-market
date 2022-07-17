@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test && npm run restore-test && jest --watch --coverage",
+    "test": "set NODE_ENV=test && npm run restore-test && jest --watchAll",
+    "test--coverage":"set NODE_ENV=test && npm run restore-test && jest --watchAll --coverage",
     "restore": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all",
     "restore-test": "npx sequelize db:migrate:undo:all --env test && npx sequelize db:migrate --env test && npx sequelize db:seed:all --env test",
     "dev": "nodemon src/index.js",
@@ -15,6 +16,12 @@
   "license": "ISC",
   "jest": {
     "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html",
+      "text"
+    ],
     "collectCoverageFrom": [
       "src/**/*.js"
     ]
@@ -28,7 +35,6 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "csv-parser": "^3.0.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
