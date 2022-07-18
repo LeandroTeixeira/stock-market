@@ -21,8 +21,9 @@ class AssetsController {
       const { trends } = await this.getTrendingCompanies(Number(days), Number(amount));
       res.status(200).json({ trends });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
-      res.status(400).json({ error: err.message });
+      res.status(400).json({ message: err.message });
     }
   };
 
@@ -33,7 +34,7 @@ class AssetsController {
       return res.status(400).json({ message: 'Error: Type is required' });
     }
     if (type.toLowerCase() !== 'asset' && type.toLowerCase() !== 'client') {
-      return res.status(400).json({ message: 'Error: Type must be either asset or client' });
+      return res.status(422).json({ message: 'Error: Type must be either asset or client' });
     }
     try {
       if (type === 'asset') {
@@ -49,7 +50,7 @@ class AssetsController {
         });
       }
       if (Number(id) !== req.user.id) {
-        return res.status(401)
+        return res.status(403)
           .json({ message: 'Can\'t require assets from other users' });
       }
       const owned = await stockModel.getStocksFromOwner(Number(id));

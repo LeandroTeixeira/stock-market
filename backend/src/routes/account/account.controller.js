@@ -50,13 +50,13 @@ class AccountController {
       return res.status(400).json({ message: 'Error: Email, name and password are required fields.' });
     }
     if (typeof email !== 'string' || typeof password !== 'string') {
-      return res.status(422).json({ message: 'Error: Email, name and password must be strings.' });
+      return res.status(422).json({ message: 'Error: Email and password must be strings.' });
     }
     if (risk !== undefined && Number(risk) !== 0 && Number(risk) !== 1) {
       return res.status(422).json({ message: 'Error: Risk must be either 0 or 1.' });
     }
 
-    if (email.match(/[a-z]+[0-z]*@[a-z]+.[a-z]+\.[a-z]+/) === null) {
+    if (email.match(/[a-z]+[0-z]*@[a-z]+[a-z]+\.[a-z]+[a-z]+.*/) === null) {
       return res.status(422).json({ message: 'Error: Wrong email format.' });
     }
     if (password.length < 6) {
@@ -64,13 +64,13 @@ class AccountController {
     }
     try {
       await userModel.getUsersByAttribute('email', email);
+
       return res.status(409).json({ message: 'Error: email already registered.' });
     } catch (err) {
       try {
         const newUser = await userModel.upsertUser({
           name, email, password, risk, funds: 0,
         });
-
         return res.status(201).json({
           user: {
             id: newUser.user.id,
@@ -82,6 +82,7 @@ class AccountController {
           },
         });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
         return res.status(400).json({ message: error.message });
       }
@@ -89,19 +90,21 @@ class AccountController {
   };
 
   updateAccount = async (req, res) => {
-    const [user] = await userModel.getUsersByAttribute('id', req.params.id);
     // eslint-disable-next-line eqeqeq
-    if (user.id == req.user.id) {
+    if (req.user.id == req.params.id) {
       const {
         email, password, name, risk,
       } = req.body;
+      if (email === undefined || password === undefined) {
+        return res.status(400).json({ message: 'Error: Email and password are required fields.' });
+      }
       if (typeof email !== 'string' || typeof password !== 'string') {
-        return res.status(422).json({ message: 'Error: Email, name and password must be strings.' });
+        return res.status(422).json({ message: 'Error: Email and password must be strings.' });
       }
       if (risk !== undefined && Number(risk) !== 0 && Number(risk) !== 1) {
         return res.status(422).json({ message: 'Error: Risk must be either 0 or 1.' });
       }
-      if (email.match(/[a-z]+[0-z]*@[a-z]+.[a-z]+\.[a-z]+/) === null) {
+      if (email.match(/[a-z]+[0-z]*@[a-z]+[a-z]+\.[a-z]+[a-z]+.*/) === null) {
         return res.status(422).json({ message: 'Error: Wrong email format.' });
       }
       if (password.length < 6) {
@@ -111,7 +114,6 @@ class AccountController {
         const newUser = await userModel.upsertUser({
           name, email, password, risk,
         });
-
         return res.status(201).json({
           user: {
             id: newUser.user.id,
@@ -123,6 +125,7 @@ class AccountController {
           },
         });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
         return res.status(400).json({ message: error.message });
       }
@@ -144,6 +147,7 @@ class AccountController {
       const deletedUser = await userModel.deleteUserById(Number(req.params.id));
       return res.status(200).json({ message: deletedUser.message, user: deletedUser.user });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
       return res.status(404).json({ message: err.message });
     }

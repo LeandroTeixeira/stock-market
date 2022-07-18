@@ -81,6 +81,7 @@ class InvestmentsController {
       });
       return res.status(200).json({ message: response.message });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
       return res.status(400).json({ message: err.message });
     }
@@ -105,6 +106,7 @@ class InvestmentsController {
       });
       return res.status(200).json({ message: response.message });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
       return res.status(400).json({ message: error.message });
     }
