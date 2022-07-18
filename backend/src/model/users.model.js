@@ -36,7 +36,6 @@ async function upsertUser(user) {
     isRoot: false,
     updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
     risk: 0,
-    funds: 0,
   };
   const [newUser, created] = await User.upsert({ ...defaultUser, ...user });
   if (created) return { user: newUser, message: 'User succesfully created.' };
@@ -79,7 +78,7 @@ async function deleteUserById(id) {
   try {
     await getUsersByAttribute('id', id);
   } catch (err) {
-    return { message: 'User succesfully deleted.' };
+    return { message: 'User succesfully deleted.', user };
   }
   throw new Error('Error deleting user');
 }
