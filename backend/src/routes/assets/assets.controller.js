@@ -10,13 +10,15 @@ class AssetsController {
 
   getTrends = async (req, res) => {
     if (this.getTrendingCompanies === undefined) {
-      this.getTrendingCompanies = await companyModel.getTrendingCompaniesFactory();
+      this.getTrendingCompanies = await companyModel
+        .getTrendingCompaniesFactory(this.getStockPrice);
     }
     let { amount, days } = req.body;
-    if (amount === undefined) amount = 5;
-    if (days === undefined) days = 15;
+    if (amount === undefined
+      || Number.isNaN(Number(amount))) amount = 5;
+    if (days === undefined || Number.isNaN(Number(days))) days = 15;
     try {
-      const { trends } = await this.getTrendingCompanies(days, amount);
+      const { trends } = await this.getTrendingCompanies(Number(days), Number(amount));
       res.status(200).json({ trends });
     } catch (err) {
       console.log(err);
@@ -28,10 +30,10 @@ class AssetsController {
     const { type } = req.body;
     const { id } = req.params;
     if (!type) {
-      return res.status(400).json({ message: 'Type is required' });
+      return res.status(400).json({ message: 'Error: Type is required' });
     }
     if (type.toLowerCase() !== 'asset' && type.toLowerCase() !== 'client') {
-      return res.status(400).json({ message: 'Type must be either asset or client' });
+      return res.status(400).json({ message: 'Error: Type must be either asset or client' });
     }
     try {
       if (type === 'asset') {

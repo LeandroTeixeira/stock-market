@@ -35,6 +35,7 @@ async function upsertUser(user) {
   const defaultUser = {
     isRoot: false,
     updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+    risk: 0,
     funds: 0,
   };
   const [newUser, created] = await User.upsert({ ...defaultUser, ...user });

@@ -16,8 +16,14 @@ getStockPriceFactory().then((getStockPrice) => {
   const loginRouter = new LoginRouter();
 
   apiV1.use('/conta', accountRouter.getRouter());
+  apiV1.use('/account', accountRouter.getRouter());
+
+  apiV1.use('/assets', assetsRouter.getRouter());
   apiV1.use('/ativos', assetsRouter.getRouter());
+
+  apiV1.use('/investments', investmentsRouter.getRouter());
   apiV1.use('/investimentos', investmentsRouter.getRouter());
+
   apiV1.use('/login', loginRouter.getRouter());
 });
 

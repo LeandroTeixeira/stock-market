@@ -559,7 +559,7 @@ async function getTrends(days) {
     const [currentAvg, pastAvg] = [sum(current[i].high, current[i].low) / 2,
       sum(past[i].high, past[i].low) / 2];
     trends.push({
-      name: current[i].name,
+      name: current[i].companyName,
       fullName: current[i].fullName,
       absoluteVariation: Number(sub(currentAvg, pastAvg)),
       relativeVariation: Number((currentAvg / pastAvg).toFixed(2)),
@@ -638,7 +638,7 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
     if (!companyMemo) {
       const {
         close, companyName, date, fullName, high, low, open, lowHour, highHour,
-      } = await timeStocksModel.getStockFromDay(company);
+      } = await timeStocksModel.getStockFromDay(company, day);
       companyMemo = {
         close, companyName, date, fullName, high, low, open, lowHour, highHour,
       };

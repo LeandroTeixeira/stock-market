@@ -19,7 +19,7 @@ class LoginController {
     this.middleware = async (req, res, next) => {
       const token = req.headers.authorization;
 
-      if (!token) { return res.status(401).json({ message: 'Token not found.' }); }
+      if (!token) { return res.status(401).json({ message: 'Error: Token not found.' }); }
 
       try {
         const decoded = jwt.verify(token, this.secret);
@@ -27,7 +27,7 @@ class LoginController {
         if (!user) {
           return res
             .status(401)
-            .json({ message: 'Failed to fetch user from token.' });
+            .json({ message: 'Error: Failed to fetch user from token.' });
         }
         req.user = user;
         next();
@@ -43,10 +43,10 @@ class LoginController {
 
   postLogin = async (req, res) => {
     const { name, email, password } = req.body;
-    if (!password) return res.status(400).json({ message: 'Password is required.' });
+    if (!password) return res.status(400).json({ message: 'Error: Password is required.' });
     if (!name && !email) {
       return res.status(400)
-        .json({ message: 'It\'s required to provide email or name for logging in.' });
+        .json({ message: 'Error: It\'s required to provide email or name for logging in.' });
     }
     let user;
 

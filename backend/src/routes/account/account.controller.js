@@ -5,7 +5,7 @@ class AccountController {
     const { valor } = req.body;
     const { user } = req;
 
-    if (!valor || valor <= 0) return res.status(422).json({ message: 'Value is required and must be higher than 0' });
+    if (!valor || valor <= 0) return res.status(422).json({ message: 'Error: Value is required and must be higher than 0' });
 
     try {
       const updatedUser = await userModel.withdraw({ key: 'id', value: user.id }, valor);
@@ -25,7 +25,7 @@ class AccountController {
   deposit = async (req, res) => {
     const { valor } = req.body;
     const { user } = req;
-    if (!valor || valor <= 0) return res.status(422).json({ message: 'Value is required and must be higher than 0' });
+    if (!valor || valor <= 0) return res.status(422).json({ message: 'Error: Value is required and must be higher than 0' });
 
     try {
       const updatedUser = await userModel.deposit({ key: 'id', value: user.id }, valor);
@@ -43,7 +43,49 @@ class AccountController {
   };
 
   saveAccount = async (req, res) => {
+    const {
+      email, password, name, risk,
+    } = req.body;
+    if (email === undefined || password === undefined || name === undefined) {
+      return res.status(400).json({ message: 'Error: Email, name and password are required fields.' });
+    }
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      return res.status(422).json({ message: 'Error: Email, name and password must be strings.' });
+    }
+    if (risk !== undefined && Number(risk) !== 0 && Number(risk) !== 1) {
+      return res.status(422).json({ message: 'Error: Risk must be either 0 or 1.' });
+    }
 
+    if (email.match(/[a-z]+[0-z]*@[a-z]+.[a-z]+\.[a-z]+/) === null) {
+      return res.status(422).json({ message: 'Error: Wrong email format.' });
+    }
+    if (password.length < 6) {
+      return res.status(422).json({ message: 'Error: Pasword must have at least 6 characters.' });
+    }
+    try {
+      await userModel.getUsersByAttribute('email', email);
+      return res.status(409).json({ message: 'Error: email already registered;' });
+    } catch (err) {
+      try {
+        const newUser = await userModel.upsertUser({
+          name, email, password, risk,
+        });
+
+        return res.status(201).json({
+          user: {
+            id: newUser.user.id,
+            name: newUser.user.name,
+            email: newUser.user.email,
+            password: newUser.user.password,
+            risk: newUser.user.risk,
+            funds: newUser.user.funds,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({ message: error.message });
+      }
+    }
   };
 
   updateAccount = async (req, res) => {

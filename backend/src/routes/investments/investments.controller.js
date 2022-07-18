@@ -15,11 +15,11 @@ class InvestmentsController {
   buyStock = async (req, res) => {
     const { codCliente, codAtivo, qtdAtivo } = req.body;
     if (codCliente === undefined || codAtivo === undefined || codAtivo === undefined) {
-      return res.status(400).json({ message: 'You need to specify the buyer, the assett and the amount' });
+      return res.status(400).json({ message: 'Error: You need to specify the buyer, the assett and the amount' });
     }
-    if (qtdAtivo <= 0) { res.status(422).json({ message: 'Asset amount must be higher than 0' }); }
+    if (qtdAtivo <= 0) { res.status(422).json({ message: 'Error: Asset amount must be higher than 0' }); }
     const root = await userModel.getRoot();
-    if (codCliente === root.id) return res.status(403).json({ mesage: 'Forbidden operation.' });
+    if (codCliente === root.id) return res.status(403).json({ mesage: 'Error: Forbidden operation.' });
     try {
       const response = await stockModel.transferOwnership({
         sellerId: root.id,
@@ -38,11 +38,11 @@ class InvestmentsController {
   sellStock = async (req, res) => {
     const { codCliente, codAtivo, qtdAtivo } = req.body;
     if (codCliente === undefined || codAtivo === undefined || codAtivo === undefined) {
-      return res.status(400).json({ message: 'You need to specify the buyer, the assett and the amount' });
+      return res.status(400).json({ message: 'Error: You need to specify the buyer, the assett and the amount' });
     }
-    if (qtdAtivo <= 0) { res.status(422).json({ message: 'Asset amount must be higher than 0' }); }
+    if (qtdAtivo <= 0) { res.status(422).json({ message: 'Error: Asset amount must be higher than 0' }); }
     const root = await userModel.getRoot();
-    if (codCliente === root.id) return res.status(403).json({ mesage: 'Forbidden operation.' });
+    if (codCliente === root.id) return res.status(403).json({ mesage: 'Error: Forbidden operation.' });
 
     try {
       const response = await stockModel.transferOwnership({
