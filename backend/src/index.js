@@ -5,7 +5,6 @@ const { parseCSV } = require('./utils/csvParser');
 
 const app = require('./app');
 const { mongoConnect } = require('./utils/mongo');
-const { COMPANY_LIST } = require('./model/companies.model');
 // const { mongoConnect } = require('./services/mongo');
 
 const PORT = process.env.PORT || 8000;
@@ -17,9 +16,10 @@ const dataPaths = {
   test: path.join(__dirname, '..', 'tests', 'stockData-test.csv'),
 };
 
-const loadTimeStocks = async (path) => {
-  const data = parseCSV(path).map((el, index) => {
+const loadTimeStocks = async (p) => {
+  const data = parseCSV(p).map((el, index) => {
     if (index % 10 === 0) return el;
+    return undefined;
   }).filter((el) => el !== undefined);
   await timeStockModel.initializeStocks(data);
 };

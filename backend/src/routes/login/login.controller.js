@@ -13,7 +13,7 @@ class LoginController {
   constructor() {
     this.secret = process.env.JWT_SECRET;
     this.jwtConfig = {
-      expiresIn: '8h',
+      expiresIn: '2h',
       algorithm: 'HS256',
     };
     this.middleware = async (req, res, next) => {

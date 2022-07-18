@@ -1,6 +1,8 @@
+const random = require('random');
 const { Company } = require('../../models/index');
 const { sum, sub } = require('../utils/arithmetic');
 const timeStocksModel = require('./timeStocks.model');
+
 require('dotenv').config();
 
 const COMPANY_LIST = [
@@ -534,7 +536,7 @@ const COMPANY_LIST = [
   }];
 
 async function getCompanies() {
-  const results = await Company.findAll({ attributes: ['name', 'fullName'] });
+  const results = await Company.findAll({ attributes: ['id', 'name', 'fullName'] });
   return results;
 }
 
@@ -656,23 +658,63 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
 
     const now = new Date(stockDay);
 
-    if (now.getHours() <= 10) return { messageMemo, memo, stockPrice: companyMemo.open };
-    if (now.getHours() >= 18) return { messageMemo, memo, stockPrice: companyMemo.close };
+    if (now.getHours() <= 10) {
+      return {
+        companyMemo,
+        messageMemo,
+        memo,
+        stockPrice: companyMemo.open,
+      };
+    }
+    if (now.getHours() >= 18) {
+      return {
+        companyMemo,
+        messageMemo,
+        memo,
+        stockPrice: companyMemo.close,
+      };
+    }
     if (now.getHours() === companyMemo.lowHour) {
       return {
+        companyMemo,
         messageMemo,
         memo,
         stockPrice: companyMemo.low,
       };
     }
     if (now.getHours() === companyMemo.highHour) {
-      return { messageMemo, memo, stockPrice: companyMemo.high };
+      return {
+        companyMemo,
+        messageMemo,
+        memo,
+        stockPrice: companyMemo.high,
+      };
+    }
+    const u = (Number(sum(companyMemo.high, companyMemo.low))) / 2;
+    const o = (Number(sub(companyMemo.high, u))) / 2;
+    const distribution = random.normal(u, o);
+    const randomPrice = distribution();
+    if (randomPrice < companyMemo.low) {
+      return {
+        messageMemo,
+        memo,
+        companyMemo,
+        stockPrice: companyMemo.low,
+      };
+    }
+    if (randomPrice > companyMemo.high) {
+      return {
+        messageMemo,
+        memo,
+        companyMemo,
+        stockPrice: companyMemo.high,
+      };
     }
     return {
       messageMemo,
       memo,
-      stockPrice: Math.random()
-      * (Number(sub(companyMemo.high, companyMemo.low))) + Number(companyMemo.low),
+      companyMemo,
+      stockPrice: randomPrice.toFixed(3),
     };
   }
 

@@ -1,8 +1,8 @@
 const sinon = require('sinon');
 
-const { sequelize } = require('../models');
-const usersModel = require('../src/model/users.model');
-const { sub } = require('../src/utils/arithmetic');
+const { sequelize } = require('../../models');
+const usersModel = require('../../src/model/users.model');
+const { sub } = require('../../src/utils/arithmetic');
 
 require('dotenv').config();
 /* eslint-disable no-undef */

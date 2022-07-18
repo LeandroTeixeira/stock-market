@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run restore-test && jest --watchAll",
-    "test-coverage":"npm run restore-test && jest --watchAll --coverage",
+    "test-coverage": "npm run restore-test && jest --watchAll --coverage",
     "restore": "npx sequelize db:migrate:undo:all --env development && npx sequelize db:migrate --env development && npx sequelize db:seed:all --env development",
     "restore-test": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all ",
     "dev": "npm run restore && nodemon src/index.js",
@@ -24,7 +24,8 @@
       "text"
     ],
     "collectCoverageFrom": [
-      "src/**/*.js", "!src/data/*.js"
+      "src/**/*.js",
+      "!src/data/*.js"
     ]
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.19",
+    "random": "^3.0.6",
     "sequelize": "^6.21.3",
     "sequelize-cli": "^6.4.1"
   }

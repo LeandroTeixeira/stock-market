@@ -127,7 +127,7 @@ class AccountController {
         return res.status(400).json({ message: error.message });
       }
     }
-    return res.status(403).json({ message: 'Error: Forbidden' });
+    return res.status(403).json({ message: 'Error: Forbidden operation.' });
   };
 
   deleteAccount = async (req, res) => {

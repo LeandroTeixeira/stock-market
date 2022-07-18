@@ -1,12 +1,12 @@
 const sinon = require('sinon');
 
-const { sequelize } = require('../models');
-const stocks = require('../src/model/stocks.model');
-const timeStocks = require('../src/model/timeStocks.model');
+const { sequelize } = require('../../models');
+const stocks = require('../../src/model/stocks.model');
+const timeStocks = require('../../src/model/timeStocks.model');
 const {
   COMPANY_LIST,
-} = require('../src/model/companies.model');
-const userModel = require('../src/model/users.model');
+} = require('../../src/model/companies.model');
+const userModel = require('../../src/model/users.model');
 require('dotenv').config();
 /* eslint-disable no-undef */
 describe('Stocks Model Test', () => {

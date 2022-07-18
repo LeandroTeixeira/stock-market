@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const sinon = require('sinon');
-const { COMPANY_LIST } = require('../src/model/companies.model');
-const timeStocks = require('../src/model/timeStocks.model');
-const { mongoConnect, mongoDisconnect } = require('../src/utils/mongo');
+const { COMPANY_LIST } = require('../../src/model/companies.model');
+const timeStocks = require('../../src/model/timeStocks.model');
+const { mongoConnect, mongoDisconnect } = require('../../src/utils/mongo');
 
 describe('Time Stocks Model Test ', () => {
   beforeAll(async () => {

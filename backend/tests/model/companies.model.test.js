@@ -1,12 +1,12 @@
 const sinon = require('sinon');
 
-const { sequelize } = require('../models');
+const { sequelize } = require('../../models');
 const {
   getCompanies, COMPANY_LIST, getCompanyByAttribute,
   getStockPriceFactory, getTrendingCompaniesFactory,
-} = require('../src/model/companies.model');
-const stocks = require('../src/model/stocks.model');
-const timeStocks = require('../src/model/timeStocks.model');
+} = require('../../src/model/companies.model');
+const stocks = require('../../src/model/stocks.model');
+const timeStocks = require('../../src/model/timeStocks.model');
 
 require('dotenv').config();
 /* eslint-disable no-undef */
@@ -21,7 +21,7 @@ describe('Companies Model Test', () => {
 
   it('Companies Model: Test getAllCompanies', async () => {
     const returned = await getCompanies();
-    expect(returned).toEqual(COMPANY_LIST);
+    expect(returned).toEqual(COMPANY_LIST.map((company, index) => ({ ...company, id: index + 1 })));
   });
 
   it('Companies Model: Test getCompanyByAttribute', async () => {

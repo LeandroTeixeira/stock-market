@@ -79,9 +79,38 @@ async function initializeStocks(stocks) {
   return { stocks: all, message: 'Stocks succesfully initialized' };
 }
 
+async function getSuggestions({
+  funds, assetsOwned, availableAssets, risk, time,
+}) {
+  // await alguma coisa
+  const buy = [{
+    companyId: null,
+    amount: null,
+    date: null,
+    expectedPrice: [null, 'High/Low/avg'],
+
+    totalSpenditure: null,
+  }];
+  const sell = [{
+    companyId: null,
+    amount: null,
+    date: null,
+    expectedPrice: [null, 'High/Low/avg'],
+    totalProfit: null,
+  }];
+  return {
+    suggestedBuy: buy,
+    suggestedSell: sell,
+    input: {
+      funds, assetsOwned, availableAssets, risk, time,
+    },
+  };
+}
+
 module.exports = {
   getAllStocksFromDay,
   getStockFromDay,
   initializeStocks,
   saveStock,
+  getSuggestions,
 };
