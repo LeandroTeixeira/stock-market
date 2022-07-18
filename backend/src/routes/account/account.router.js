@@ -31,6 +31,20 @@ class AccountRouter {
       this.loginController.getMiddleware(),
       this.accountController.getAccount,
     );
+    this.router.put(
+      '/:id',
+      this.loginController.getMiddleware(),
+      this.accountController.updateAccount,
+    );
+    this.router.delete(
+      '/:id',
+      this.loginController.getMiddleware(),
+      this.accountController.deleteAccount,
+    );
+    this.router.post(
+      '/',
+      this.accountController.saveAccount,
+    );
   }
 
   getRouter() {

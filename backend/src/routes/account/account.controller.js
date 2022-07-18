@@ -42,6 +42,18 @@ class AccountController {
     }
   };
 
+  saveAccount = async (req, res) => {
+
+  };
+
+  updateAccount = async (req, res) => {
+
+  };
+
+  deleteAccount = async (req, res) => {
+
+  };
+
   getAccount = async (req, res) => {
     try {
       const [user] = await userModel.getUsersByAttribute('id', req.params.id);

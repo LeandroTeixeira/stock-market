@@ -61,7 +61,6 @@ async function transferFunds(sourceId, destinationId, amount) {
   const seller = await getUsersByAttribute('id', destinationId);
   const buyer = await getUsersByAttribute('id', sourceId);
   if (!buyer[0].isRoot && Number(buyer[0].funds) < amount) throw new Error('Insufficient funds.');
-  console.log(seller[0]);
   seller[0].funds = sum(seller[0].funds, amount);
   buyer[0].funds = sub(buyer[0].funds, amount);
   await upsertUser(buyer[0]);

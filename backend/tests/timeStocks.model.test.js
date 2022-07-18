@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const sinon = require('sinon');
 const { COMPANY_LIST } = require('../src/model/companies.model');
 const timeStocks = require('../src/model/timeStocks.model');
 const { mongoConnect, mongoDisconnect } = require('../src/utils/mongo');
@@ -11,11 +12,14 @@ describe('Time Stocks Model Test ', () => {
   afterAll(async () => {
     await mongoDisconnect();
   });
+  afterEach(() => {
+    sinon.restore();
+  });
 
   it('Time Stocks: Initialize Stocks', async () => {
-    const stock = await timeStocks.getStockFromDay(COMPANY_LIST[0]);
-    const all = await timeStocks.initializeStocks([stock]);
-    expect(all.length).toBeGreaterThan(10000);
+    sinon.stub(timeStocks, 'saveStock').resolves({ upsertedCount: 1 });
+    const { message } = await timeStocks.initializeStocks([1]);
+    expect(message).toEqual('Stocks succesfully initialized');
   });
 
   it('Time Stocks: Get Stock From Day ', async () => {

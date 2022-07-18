@@ -562,23 +562,46 @@ async function getTrends(days) {
       name: current[i].name,
       fullName: current[i].fullName,
       absoluteVariation: Number(sub(currentAvg, pastAvg)),
-      relativeVariation: currentAvg / pastAvg,
+      relativeVariation: Number((currentAvg / pastAvg).toFixed(2)),
     });
   }
   return trends;
 }
 
-async function getTrendingCompanies(days, amount) {
-  const trends = await getTrends(days);
-  trends.sort((a, b) => a.absoluteVariation - b.absoluteVariation);
-  const [worstAbsolute, bestAbsolute] = [trends.slice(0, amount), trends.slice(amount * (-1))];
-  trends.sort((a, b) => a.relativeVariation - b.relativeVariation);
-  const [worstRelative, bestRelative] = [trends.slice(0, amount), trends.slice(amount * (-1))];
-  return {
-    worstRelative, bestRelative, worstAbsolute, bestAbsolute,
+async function getTrendingCompaniesFactory() {
+  const memo = {};
+  return async function getTrendingCompanies(days, amount) {
+    let messageMemo; let worstAbsolute; let bestAbsolute; let worstRelative; let
+      bestRelative;
+    const today = new Date(Date.now());
+    const wantedDay = new Date(today.valueOf() - days * 24 * 60 * 60 * 1000);
+    wantedDay.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    const key = String(today.valueOf() / 100000) + String(wantedDay.valueOf() / 100000);
+
+    if (!(key in memo)
+    || (memo[key].bestRelative.length < amount)) {
+      const trends = await getTrends(days);
+      trends.sort((a, b) => a.absoluteVariation - b.absoluteVariation);
+      [worstAbsolute, bestAbsolute] = [trends.slice(0, amount), trends.slice(amount * (-1))];
+      trends.sort((a, b) => a.relativeVariation - b.relativeVariation);
+      [worstRelative, bestRelative] = [trends.slice(0, amount), trends.slice(amount * (-1))];
+      memo[key] = {
+        bestRelative, worstRelative, bestAbsolute, worstAbsolute,
+      };
+      messageMemo = 'Calculated';
+    } else messageMemo = 'Memoized';
+    return {
+      trends: {
+        bestAbsolute: memo[key].bestAbsolute.slice(0, amount),
+        worstAbsolute: memo[key].worstAbsolute.slice(0, amount),
+        bestRelative: memo[key].bestRelative.slice(0, amount),
+        worstRelative: memo[key].worstRelative.slice(0, amount),
+      },
+      messageMemo,
+    };
   };
 }
-
 async function getCompanyByAttribute(key, value) {
   if (Object.keys(Company.rawAttributes).find((k) => k === key)) {
     const result = await Company.findAll({
@@ -661,5 +684,5 @@ module.exports = {
   getCompanies,
   getCompanyByAttribute,
   getStockPriceFactory,
-  getTrendingCompanies,
+  getTrendingCompaniesFactory,
 };

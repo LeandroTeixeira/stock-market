@@ -19,6 +19,7 @@ class InvestmentsRouter {
 
     this.router.post('/comprar', this.loginController.getMiddleware(), this.investmentsController.buyStock);
     this.router.post('/vender', this.loginController.getMiddleware(), this.investmentsController.sellStock);
+    this.router.get('/suggestions', this.loginController.getMiddleware(), this.investmentsController.getSuggestions);
   }
 
   getRouter() {

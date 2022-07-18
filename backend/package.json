@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test && npm run restore-test && jest --watchAll",
-    "test-coverage":"set NODE_ENV=test && npm run restore-test && jest --watchAll --coverage",
+    "test": "npm run restore-test && jest --watchAll",
+    "test-coverage":"npm run restore-test && jest --watchAll --coverage",
     "restore": "npx sequelize db:migrate:undo:all --env development && npx sequelize db:migrate --env development && npx sequelize db:seed:all --env development",
-    "restore-test": "npx sequelize db:migrate:undo:all --env test && npx sequelize db:migrate --env test && npx sequelize db:seed:all --env test",
+    "restore-test": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all ",
     "dev": "npm run restore && nodemon src/index.js",
     "start": "npm run restore && node src/index.js",
     "generator": "node ./src/data/converter.js"
@@ -24,7 +24,7 @@
       "text"
     ],
     "collectCoverageFrom": [
-      "src/**/*.js"
+      "src/**/*.js", "!src/data/*.js"
     ]
   },
   "devDependencies": {

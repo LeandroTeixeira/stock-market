@@ -2,7 +2,8 @@ const sinon = require('sinon');
 
 const { sequelize } = require('../models');
 const {
-  getCompanies, COMPANY_LIST, getCompanyByAttribute, getStockPriceFactory, getTrendingCompanies,
+  getCompanies, COMPANY_LIST, getCompanyByAttribute,
+  getStockPriceFactory, getTrendingCompaniesFactory,
 } = require('../src/model/companies.model');
 const stocks = require('../src/model/stocks.model');
 const timeStocks = require('../src/model/timeStocks.model');
@@ -149,6 +150,7 @@ describe('Companies Model Test', () => {
   it('Companies Model: Test trending companies', async () => {
     const getStockStub = sinon.stub(timeStocks, 'getAllStocksFromDay');
     const companyList = await getCompanies();
+    const getTrendingCompanies = await getTrendingCompaniesFactory();
     getStockStub.withArgs(companyList).returns(
       COMPANY_LIST.map((company, index) => ({
         name: company.name,
@@ -171,7 +173,7 @@ describe('Companies Model Test', () => {
       })),
     );
 
-    const trends = await getTrendingCompanies(30, 10);
+    const { trends } = await getTrendingCompanies(30, 10);
     expect(trends).toHaveProperty('bestAbsolute');
     expect(trends).toHaveProperty('worstAbsolute');
     expect(trends).toHaveProperty('bestRelative');

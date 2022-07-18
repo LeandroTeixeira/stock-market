@@ -26,7 +26,7 @@ describe('Stocks Model Test', () => {
   });
 
   it('Users Model: GetUsersByTwoAttributes', async () => {
-    let users = await usersModel.getUsersByTwoAttributes('email', 'leandroteixeira3@gmail.com', 'password', 'kjkszpj1');
+    let users = await usersModel.getUsersByTwoAttributes('email', 'leandroteixeira3@gmail.com', 'password', 'kjkszpj');
     expect(users.length).toBe(1);
     expect(users[0].name).toEqual('Leandro Teixeira');
     users = await usersModel.getUsersByTwoAttributes('email', 'root', 'password', process.env.MYSQL_DEV_PASSWORD);

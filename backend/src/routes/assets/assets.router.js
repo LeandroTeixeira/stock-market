@@ -22,6 +22,7 @@ class AssetsRouter {
       this.loginController.getMiddleware(),
       this.assetsController.get,
     );
+    this.router.get('/', this.assetsController.getTrends);
   }
 
   getRouter() {

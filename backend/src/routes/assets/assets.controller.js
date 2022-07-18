@@ -2,9 +2,27 @@ const stockModel = require('../../model/stocks.model');
 const companyModel = require('../../model/companies.model');
 
 class AssetsController {
+  getTrendingCompanies;
+
   constructor(getStockPrice) {
     this.getStockPrice = getStockPrice;
   }
+
+  getTrends = async (req, res) => {
+    if (this.getTrendingCompanies === undefined) {
+      this.getTrendingCompanies = await companyModel.getTrendingCompaniesFactory();
+    }
+    let { amount, days } = req.body;
+    if (amount === undefined) amount = 5;
+    if (days === undefined) days = 15;
+    try {
+      const { trends } = await this.getTrendingCompanies(days, amount);
+      res.status(200).json({ trends });
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ error: err.message });
+    }
+  };
 
   get = async (req, res) => {
     const { type } = req.body;

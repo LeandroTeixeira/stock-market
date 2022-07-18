@@ -76,11 +76,12 @@ async function initializeStocks(stocks) {
     }
   }
   const all = await getAllStocks();
-  return all;
+  return { stocks: all, message: 'Stocks succesfully initialized' };
 }
 
 module.exports = {
   getAllStocksFromDay,
   getStockFromDay,
   initializeStocks,
+  saveStock,
 };

@@ -8,6 +8,10 @@ class InvestmentsController {
     this.getStockPrice = getStockPrice;
   }
 
+  getSuggestions = async (req, res) => {
+
+  };
+
   buyStock = async (req, res) => {
     const { codCliente, codAtivo, qtdAtivo } = req.body;
     if (codCliente === undefined || codAtivo === undefined || codAtivo === undefined) {
