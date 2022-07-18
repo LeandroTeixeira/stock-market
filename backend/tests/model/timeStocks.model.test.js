@@ -2,6 +2,7 @@
 const sinon = require('sinon');
 const { COMPANY_LIST } = require('../../src/model/companies.model');
 const timeStocks = require('../../src/model/timeStocks.model');
+const timeStocksModel = require('../../src/model/timeStocks.mongo');
 const { mongoConnect, mongoDisconnect } = require('../../src/utils/mongo');
 
 describe('Time Stocks Model Test ', () => {
@@ -17,9 +18,18 @@ describe('Time Stocks Model Test ', () => {
   });
 
   it('Time Stocks: Initialize Stocks', async () => {
-    sinon.stub(timeStocks, 'saveStock').resolves({ upsertedCount: 1 });
+    const updateOneStub = sinon.stub(timeStocksModel, 'updateOne').onCall(0).resolves({ upsertedCount: 1 });
+    sinon.stub(timeStocksModel, 'findOne').resolves({});
     const { message } = await timeStocks.initializeStocks([1]);
     expect(message).toEqual('Stocks succesfully initialized');
+    updateOneStub.onCall(2).resolves({ upsertedCount: 1 });
+    sinon.stub(Promise, 'all').throws(new Error('Error'));
+
+    await expect(async () => {
+      await timeStocks.initializeStocks([1, 2, 43, 66]);
+    })
+      .rejects
+      .toThrow('Error');
   });
 
   it('Time Stocks: Get Stock From Day ', async () => {

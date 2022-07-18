@@ -63,7 +63,6 @@ async function saveStock(stock) {
 
 async function initializeStocks(stocks) {
   const { response } = await saveStock(stocks[0]);
-
   if (response.upsertedCount === 1) {
     const promiseList = [];
     stocks.forEach(async (stock) => {
@@ -72,7 +71,7 @@ async function initializeStocks(stocks) {
     try {
       Promise.all(promiseList);
     } catch (err) {
-      console.error(`Error saving planet to mongoDB: ${err}`);
+      throw new Error(`Error saving planet to mongoDB: ${err}`);
     }
   }
   const all = await getAllStocks();

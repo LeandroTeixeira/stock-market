@@ -46,6 +46,7 @@
     "nodemon": "^2.0.19",
     "random": "^3.0.6",
     "sequelize": "^6.21.3",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "supertest": "^6.2.4"
   }
 }
