@@ -1,4 +1,5 @@
 const { Company } = require('../../models/index');
+const { sum, sub } = require('../utils/arithmetic');
 const timeStocksModel = require('./timeStocks.model');
 
 const COMPANY_LIST = [
@@ -11,9 +12,6 @@ const COMPANY_LIST = [
     fullName: 'Alcoa Corp',
   },
   {
-    name: 'AAC',
-    fullName: 'Ares Acquisition Corp',
-  }, {
     name: 'AAC',
     fullName: 'Ares Acquisition Corp',
   }, {
@@ -94,7 +92,10 @@ const COMPANY_LIST = [
   }, {
     name: 'ACGL',
     fullName: 'Arch Capital Group LTD',
-  }, { name: 'ACH', fullName: 'Aluminium Corporation of China Ltd' }, {
+  }, {
+    name: 'ACH',
+    fullName: 'Aluminium Corporation of China Ltd',
+  }, {
     name: 'ACHC',
     fullName: 'Acadia Healthcare Company Inc',
   }, {
@@ -554,12 +555,12 @@ async function getTrends(days) {
   const past = await timeStocksModel.getAllStocksFromDay(companies, day);
   const trends = [];
   for (let i = 0; i < current.length; i += 1) {
-    const [currentAvg, pastAvg] = [(current[i].high + current[i].low) / 2,
-      (past[i].high + past[i].low) / 2];
+    const [currentAvg, pastAvg] = [sum(current[i].high, current[i].low) / 2,
+      sum(past[i].high, past[i].low) / 2];
     trends.push({
       name: current[i].name,
       fullName: current[i].fullName,
-      absoluteVariation: currentAvg - pastAvg,
+      absoluteVariation: Number(sub(currentAvg, pastAvg)),
       relativeVariation: currentAvg / pastAvg,
     });
   }
@@ -595,31 +596,44 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
   let day = new Date(referenceDay);
   day.setHours(0, 0, 0, 0);
   const memo = {
-    [day.valueOf()]: { companies: [] },
+    [day.valueOf()]: [],
   };
   async function getStockPrice({ key, value }, stockDay = Date.now()) {
     day = new Date(stockDay);
     day.setHours(0, 0, 0, 0);
     if (!(day.valueOf() in memo)) {
-      memo[day.valueOf()] = { companies: [] };
+      memo[day.valueOf()] = [];
     }
 
     const company = await getCompanyByAttribute(key, value);
     if (company.error) return company;
 
-    let companyMemo = memo[day.valueOf()].companies.find((c) => c.name === company.name);
+    let companyMemo = memo[day.valueOf()].find((c) => c.fullName === company.fullName);
     let messageMemo;
 
     if (!companyMemo) {
-      const stockData = await timeStocksModel.getStockFromDay(company);
-      companyMemo = { ...stockData };
-      memo[day.valueOf()].companies.push(companyMemo);
+      const {
+        close, companyName, date, fullName, high, low, open, lowHour, highHour,
+      } = await timeStocksModel.getStockFromDay(company);
+      companyMemo = {
+        close, companyName, date, fullName, high, low, open, lowHour, highHour,
+      };
+      if (companyMemo.lowHour === undefined) {
+        companyMemo.lowHour = Math.floor(Math.random() * 7) + 11;
+      }
+
+      if (companyMemo.highHour === undefined) {
+        companyMemo.highHour = Math.floor(Math.random() * 7) + 11;
+      }
+
+      memo[day.valueOf()].push(companyMemo);
       messageMemo = 'Calculated';
     } else messageMemo = 'Memoized';
 
     const now = new Date(stockDay);
-    if (now.getHours() < 10) return { messageMemo, memo, stockPrice: companyMemo.open };
-    if (now.getHours() > 18) return { messageMemo, memo, stockPrice: companyMemo.close };
+
+    if (now.getHours() <= 10) return { messageMemo, memo, stockPrice: companyMemo.open };
+    if (now.getHours() >= 18) return { messageMemo, memo, stockPrice: companyMemo.close };
     if (now.getHours() === companyMemo.lowHour) {
       return {
         messageMemo,
@@ -633,7 +647,8 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
     return {
       messageMemo,
       memo,
-      stockPrice: Math.random() * (companyMemo.high - companyMemo.low) + companyMemo.low,
+      stockPrice: Math.random()
+      * (Number(sub(companyMemo.high, companyMemo.low))) + Number(companyMemo.low),
     };
   }
 

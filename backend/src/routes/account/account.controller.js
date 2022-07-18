@@ -1,7 +1,7 @@
 const userModel = require('../../model/users.model');
 
 class AccountController {
-  async withdraw(req, res) {
+  withdraw = async (req, res) => {
     const { valor } = req.body;
     const { user } = req;
 
@@ -20,9 +20,9 @@ class AccountController {
     } catch ({ message }) {
       return res.status(400).json({ message });
     }
-  }
+  };
 
-  async deposit(req, res) {
+  deposit = async (req, res) => {
     const { valor } = req.body;
     const { user } = req;
     if (!valor || valor <= 0) return res.status(422).json({ message: 'Value is required and must be higher than 0' });
@@ -40,9 +40,9 @@ class AccountController {
     } catch ({ message }) {
       return res.status(400).json({ message });
     }
-  }
+  };
 
-  async getAccount(req, res) {
+  getAccount = async (req, res) => {
     try {
       const [user] = await userModel.getUsersByAttribute('id', req.params.id);
       // eslint-disable-next-line eqeqeq
@@ -65,6 +65,6 @@ class AccountController {
     } catch ({ message }) {
       return res.status(404).json({ message });
     }
-  }
+  };
 }
 module.exports = AccountController;

@@ -37,8 +37,9 @@ describe('Companies Model Test', () => {
     const getStockStub = sinon.stub(timeStocks, 'getStockFromDay');
     for (let i = 0; i < 2; i += 1) {
       getStockStub.withArgs({ id: i + 1, ...COMPANY_LIST[i] }).resolves({
-        name: COMPANY_LIST[i].name,
+        companyName: COMPANY_LIST[i].name,
         fullName: COMPANY_LIST[i].fullName,
+        date: new Date(Date.now()),
         open: stocks.OPEN,
         high: stocks.HIGH,
         low: stocks.LOW,
@@ -47,34 +48,34 @@ describe('Companies Model Test', () => {
         highHour: stocks.HIGH_HOUR,
       });
     }
+
     const getStockPrice = await getStockPriceFactory();
     const today = new Date(Date.now());
     today.setHours(0, 0, 0, 0);
 
     const time = new Date(Date.now());
     time.setHours(11, 0, 0, 0);
-    let stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[0].name }, time);
+    let stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[0].fullName }, time);
 
-    expect(stock.stockPrice).toBeGreaterThanOrEqual(stocks.LOW);
-    expect(stock.stockPrice).toBeLessThanOrEqual(stocks.HIGH);
+    expect(Number(stock.stockPrice)).toBeGreaterThanOrEqual(Number(stocks.LOW));
+    expect(Number(stock.stockPrice)).toBeLessThanOrEqual(Number(stocks.HIGH));
 
     expect(stock.memo).toHaveProperty(String(today.valueOf()));
-    expect(stock.memo[today.valueOf()]).toHaveProperty('companies');
+    expect(stock.memo[today.valueOf()].length).toBe(1);
 
     expect(stock.messageMemo).toBe('Calculated');
 
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name });
-
-    expect(stock.memo[today.valueOf()].companies[0].name).toBe(COMPANY_LIST[0].name);
-    expect(stock.memo[today.valueOf()].companies[0].fullName).toBe(COMPANY_LIST[0].fullName);
-    expect(stock.memo[today.valueOf()].companies[1].name).toBe(COMPANY_LIST[1].name);
-    expect(stock.memo[today.valueOf()].companies[1].fullName).toBe(COMPANY_LIST[1].fullName);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[1].fullName });
+    expect(stock.memo[today.valueOf()][0].companyName).toBe(COMPANY_LIST[0].name);
+    expect(stock.memo[today.valueOf()][0].fullName).toBe(COMPANY_LIST[0].fullName);
+    expect(stock.memo[today.valueOf()][1].companyName).toBe(COMPANY_LIST[1].name);
+    expect(stock.memo[today.valueOf()][1].fullName).toBe(COMPANY_LIST[1].fullName);
     expect(stock.messageMemo).toBe('Calculated');
 
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[0].name });
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[0].fullName });
     expect(stock.messageMemo).toBe('Memoized');
 
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name });
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[1].fullName });
     expect(stock.messageMemo).toBe('Memoized');
   });
 
@@ -82,8 +83,9 @@ describe('Companies Model Test', () => {
     const getStockStub = sinon.stub(timeStocks, 'getStockFromDay');
     for (let i = 0; i < 2; i += 1) {
       getStockStub.withArgs({ id: i + 1, ...COMPANY_LIST[i] }).resolves({
-        name: COMPANY_LIST[i].name,
+        companyName: COMPANY_LIST[i].name,
         fullName: COMPANY_LIST[i].fullName,
+        date: new Date(Date.now()),
         open: stocks.OPEN,
         high: stocks.HIGH,
         low: stocks.LOW,
@@ -99,30 +101,29 @@ describe('Companies Model Test', () => {
     const day4 = new Date('2019-12-12T22:00:00');
     let stock;
 
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[0].name }, day1);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[0].fullName }, day1);
     expect(stock.stockPrice).toBe(stocks.OPEN);
     expect(stock.messageMemo).toBe('Calculated');
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name }, day2);
-    console.log(stock);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[1].fullName }, day2);
     expect(stock.stockPrice).toBe(stocks.LOW);
     expect(stock.messageMemo).toBe('Calculated');
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name }, day3);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[1].fullName }, day3);
     expect(stock.stockPrice).toBe(stocks.HIGH);
     expect(stock.messageMemo).toBe('Calculated');
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[0].name }, day4);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[0].fullName }, day4);
     expect(stock.stockPrice).toBe(stocks.CLOSE);
     expect(stock.messageMemo).toBe('Calculated');
 
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[0].name }, day1);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[0].fullName }, day1);
     expect(stock.stockPrice).toBe(stocks.OPEN);
     expect(stock.messageMemo).toBe('Memoized');
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name }, day2);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[1].fullName }, day2);
     expect(stock.stockPrice).toBe(stocks.LOW);
     expect(stock.messageMemo).toBe('Memoized');
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[0].name }, day3);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[0].fullName }, day3);
     expect(stock.stockPrice).toBe(stocks.HIGH);
     expect(stock.messageMemo).toBe('Memoized');
-    stock = await getStockPrice({ key: 'name', value: COMPANY_LIST[1].name }, day4);
+    stock = await getStockPrice({ key: 'fullName', value: COMPANY_LIST[1].fullName }, day4);
     expect(stock.stockPrice).toBe(stocks.CLOSE);
     expect(stock.messageMemo).toBe('Memoized');
 
@@ -130,22 +131,19 @@ describe('Companies Model Test', () => {
     expect(stock.memo).toHaveProperty(String(auxDay2.valueOf()));
     expect(stock.memo).toHaveProperty(String(auxDay3.valueOf()));
 
-    expect(stock.memo[auxDay1.valueOf()]).toHaveProperty('companies');
-    expect(stock.memo[auxDay1.valueOf()].companies).toHaveLength(1);
-    expect(stock.memo[auxDay1.valueOf()].companies[0].name).toBe(COMPANY_LIST[0].name);
-    expect(stock.memo[auxDay1.valueOf()].companies[0].fullName).toBe(COMPANY_LIST[0].fullName);
+    expect(stock.memo[auxDay1.valueOf()]).toHaveLength(1);
+    expect(stock.memo[auxDay1.valueOf()][0].companyName).toBe(COMPANY_LIST[0].name);
+    expect(stock.memo[auxDay1.valueOf()][0].fullName).toBe(COMPANY_LIST[0].fullName);
 
-    expect(stock.memo[auxDay2.valueOf()]).toHaveProperty('companies');
-    expect(stock.memo[auxDay2.valueOf()].companies).toHaveLength(1);
-    expect(stock.memo[auxDay2.valueOf()].companies[0].name).toBe(COMPANY_LIST[1].name);
-    expect(stock.memo[auxDay2.valueOf()].companies[0].fullName).toBe(COMPANY_LIST[1].fullName);
+    expect(stock.memo[auxDay2.valueOf()]).toHaveLength(1);
+    expect(stock.memo[auxDay2.valueOf()][0].companyName).toBe(COMPANY_LIST[1].name);
+    expect(stock.memo[auxDay2.valueOf()][0].fullName).toBe(COMPANY_LIST[1].fullName);
 
-    expect(stock.memo[auxDay3.valueOf()]).toHaveProperty('companies');
-    expect(stock.memo[auxDay3.valueOf()].companies).toHaveLength(2);
-    expect(stock.memo[auxDay3.valueOf()].companies[0].name).toBe(COMPANY_LIST[1].name);
-    expect(stock.memo[auxDay3.valueOf()].companies[0].fullName).toBe(COMPANY_LIST[1].fullName);
-    expect(stock.memo[auxDay3.valueOf()].companies[1].name).toBe(COMPANY_LIST[0].name);
-    expect(stock.memo[auxDay3.valueOf()].companies[1].fullName).toBe(COMPANY_LIST[0].fullName);
+    expect(stock.memo[auxDay3.valueOf()]).toHaveLength(2);
+    expect(stock.memo[auxDay3.valueOf()][0].companyName).toBe(COMPANY_LIST[1].name);
+    expect(stock.memo[auxDay3.valueOf()][0].fullName).toBe(COMPANY_LIST[1].fullName);
+    expect(stock.memo[auxDay3.valueOf()][1].companyName).toBe(COMPANY_LIST[0].name);
+    expect(stock.memo[auxDay3.valueOf()][1].fullName).toBe(COMPANY_LIST[0].fullName);
   });
 
   it('Companies Model: Test trending companies', async () => {

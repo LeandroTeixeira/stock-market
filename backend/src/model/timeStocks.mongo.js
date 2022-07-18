@@ -15,19 +15,19 @@ const timeStockSchema = new mongoose.Schema(
       required: true,
     },
     open: {
-      type: Number,
+      type: String,
       required: true,
     },
     high: {
-      type: Number,
+      type: String,
       required: true,
     },
     low: {
-      type: Number,
+      type: String,
       required: true,
     },
     close: {
-      type: Number,
+      type: String,
       required: true,
     },
   },

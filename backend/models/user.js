@@ -12,8 +12,8 @@ const User = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
     funds: {
-      type: DataTypes.FLOAT,
-      defaultValue: 0,
+      type: DataTypes.STRING,
+      defaultValue: '0',
     },
   });
 

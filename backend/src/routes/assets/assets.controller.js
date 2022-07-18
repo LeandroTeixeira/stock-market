@@ -6,7 +6,7 @@ class AssetsController {
     this.getStockPrice = getStockPrice;
   }
 
-  async get(req, res) {
+  get = async (req, res) => {
     const { type } = req.body;
     const { id } = req.params;
     if (!type) {
@@ -19,10 +19,13 @@ class AssetsController {
       if (type === 'asset') {
         const company = await companyModel.getCompanyByAttribute('id', Number(id));
         const asset = await stockModel.getTotalStocksFromCompany(Number(id));
+        const { stockPrice } = await this.getStockPrice({ key: 'id', value: id });
         return res.status(200).json({
+          id: company.id,
           name: company.name,
           fullName: company.fullName,
           amount: asset,
+          value: stockPrice,
         });
       }
       if (Number(id) !== req.user.id) {
@@ -30,10 +33,23 @@ class AssetsController {
           .json({ message: 'Can\'t require assets from other users' });
       }
       const owned = await stockModel.getStocksFromOwner(Number(id));
-      return res.status(200).json(owned);
+      const promiseList = [];
+      owned.forEach((o) => {
+        promiseList.push(this.getStockPrice({ key: 'id', value: o.companyId }));
+      });
+      const stocks = await Promise.all(promiseList);
+      const ownedPriced = stocks.map(
+        (stock, index) => ({
+          userId: owned[index].ownerId,
+          companyId: owned[index].companyId,
+          amount: owned[index].owned,
+          value: stock.stockPrice,
+        }),
+      );
+      return res.status(200).json(ownedPriced);
     } catch ({ message }) {
       return res.status(404).json({ message });
     }
-  }
+  };
 }
 module.exports = AssetsController;

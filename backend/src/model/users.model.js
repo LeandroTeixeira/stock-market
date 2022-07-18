@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const { User, Sequelize } = require('../../models/index');
+const { sum, sub } = require('../utils/arithmetic');
 
 const defaultAttributes = ['id', 'name', 'email', 'password', 'isRoot', 'risk', 'funds'];
 async function getUsersByAttribute(key, value) {
@@ -43,15 +44,15 @@ async function upsertUser(user) {
 
 async function deposit({ key, value }, qty) {
   const user = await getUsersByAttribute(key, value);
-  user[0].funds += qty;
+  user[0].funds = sum(qty, user[0].funds);
   const updatedUser = await upsertUser(user[0]);
   return updatedUser.user;
 }
 
 async function withdraw({ key, value }, qty) {
   const user = await getUsersByAttribute(key, value);
-  if (user[0].funds < qty) throw new Error('Insufficient funds.');
-  user[0].funds -= qty;
+  if (Number(user[0].funds) < qty) throw new Error('Insufficient funds.');
+  user[0].funds = sub(user[0].funds, qty);
   const updatedUser = await upsertUser(user[0]);
   return updatedUser.user;
 }
@@ -59,9 +60,10 @@ async function withdraw({ key, value }, qty) {
 async function transferFunds(sourceId, destinationId, amount) {
   const seller = await getUsersByAttribute('id', destinationId);
   const buyer = await getUsersByAttribute('id', sourceId);
-  if (!buyer[0].isRoot && buyer[0].funds < amount) throw new Error('Insufficient funds.');
-  seller[0].funds += amount;
-  buyer[0].funds -= amount;
+  if (!buyer[0].isRoot && Number(buyer[0].funds) < amount) throw new Error('Insufficient funds.');
+  console.log(seller[0]);
+  seller[0].funds = sum(seller[0].funds, amount);
+  buyer[0].funds = sub(buyer[0].funds, amount);
   await upsertUser(buyer[0]);
   await upsertUser(seller[0]);
   return { message: 'Funds were succesfully transferred.' };
@@ -82,8 +84,14 @@ async function deleteUserById(id) {
   throw new Error('Error deleting user');
 }
 
+async function getRoot() {
+  const [root] = await getUsersByAttribute('isRoot', true);
+  return root;
+}
+
 module.exports = {
   getUsersByAttribute,
+  getRoot,
   getUsersByTwoAttributes,
   upsertUser,
   deleteUserById,

@@ -12,23 +12,19 @@ module.exports = {
         email: process.env.MYSQL_DEV_USER,
         password: process.env.MYSQL_DEV_PASSWORD,
         isRoot: true,
+        funds: '0',
+        createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+        updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+      }, {
+        name: 'Leandro Teixeira',
+        email: 'leandroteixeira3@gmail.com',
+        password: 'kjkszpj',
+        isRoot: false,
+        funds: '5000',
         createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
         updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);
-    if (process.env.NODE_ENV === 'test') {
-      await queryInterface.bulkInsert('Users', [
-        {
-          name: 'Leandro Teixeira',
-          email: 'leandroteixeira3@gmail.com',
-          password: 'kjkszpj1',
-          isRoot: false,
-          funds: 5000,
-          createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
-          updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
-        },
-      ]);
-    }
   },
 
   async down(queryInterface, Sequelize) {

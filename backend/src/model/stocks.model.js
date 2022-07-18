@@ -1,10 +1,11 @@
 const { Stock, sequelize } = require('../../models/index');
+const { mul } = require('../utils/arithmetic');
 const usersModel = require('./users.model');
 
-const HIGH = 100;
-const LOW = 50;
-const OPEN = 75;
-const CLOSE = 75;
+const HIGH = '100';
+const LOW = '50';
+const OPEN = '75';
+const CLOSE = '75';
 const LOW_HOUR = 12;
 const HIGH_HOUR = 16;
 
@@ -61,11 +62,11 @@ async function getStocksFromCompany(id) {
 
 async function getTotalStocksFromOwner(id) {
   const ownedStocks = await getStocksFromOwner(id);
-  return ownedStocks.reduce((value, { owned }) => value + owned, 0);
+  return Number(ownedStocks.reduce((value, { owned }) => value + owned, 0));
 }
 async function getTotalStocksFromCompany(id) {
   const ownedStocks = await getStocksFromCompany(id);
-  return ownedStocks.reduce((value, { owned }) => value + owned, 0);
+  return Number(ownedStocks.reduce((value, { owned }) => value + owned, 0));
 }
 
 async function transferOwnership({
@@ -73,12 +74,11 @@ async function transferOwnership({
 }) {
   const owned = (await getStocksFromOwner(sellerId));
   const ownedSeller = owned.filter(({ companyId }) => companyId === cId);
-
   if (sellerId === buyerId) throw new Error('SellerId and buyerId can\'t be equal.');
-  if (ownedSeller[0].owned < qty) throw new Error('Not enough stock to sell.');
+  if (ownedSeller.length < 1 || ownedSeller[0].owned < qty) throw new Error('Not enough stock to sell.');
   let price = await getStockPrice({ key: 'id', value: cId });
 
-  price = price.stockPrice * qty;
+  price = mul(price.stockPrice, qty);
   await usersModel.transferFunds(buyerId, sellerId, price);
 
   const stockList = await getStocksByAttribute('ownerId', sellerId);

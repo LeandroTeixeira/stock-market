@@ -28,10 +28,12 @@ module.exports = {
       risk: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
+        allowNull: false,
       },
       funds: {
-        type: Sequelize.FLOAT,
-        defaultValue: 0,
+        type: Sequelize.STRING,
+        defaultValue: '0',
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
