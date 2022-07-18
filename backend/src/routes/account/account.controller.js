@@ -134,7 +134,7 @@ class AccountController {
   };
 
   deleteAccount = async (req, res) => {
-    const [root] = await userModel.getRoot();
+    const root = await userModel.getRoot();
     // eslint-disable-next-line eqeqeq
     if (req.user.id != root.id) {
       return res.status(403).json({ message: 'Error: Forbidden' });
@@ -155,7 +155,7 @@ class AccountController {
 
   getAccount = async (req, res) => {
     try {
-      const [user] = await userModel.getUsersByAttribute('id', req.params.id);
+      const [user] = await userModel.getUsersByAttribute('id', Number(req.params.id));
       // eslint-disable-next-line eqeqeq
       if (user.id == req.user.id) {
         return res.status(200).json({

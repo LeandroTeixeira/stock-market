@@ -2,9 +2,6 @@
 const request = require('supertest');
 const sinon = require('sinon');
 const userModel = require('../../src/model/users.model');
-const companyModel = require('../../src/model/companies.model');
-const stockModel = require('../../src/model/stocks.model');
-const timeStocksModel = require('../../src/model/timeStocks.model');
 const app = require('../../src/app');
 
 describe('Account Controller Test ', () => {
@@ -12,7 +9,145 @@ describe('Account Controller Test ', () => {
     sinon.restore();
   });
 
-  it('Account Controller: Withdraw success', async () => {
+  it('Account Controller: Delete Error', async () => {
+    sinon.stub(userModel, 'getUsersByAttribute')
+      .withArgs('id', 1).resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100', risk: 0,
+      }]);
+    sinon.stub(userModel, 'getUsersByTwoAttributes')
+      .resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100',
+      }]);
+
+    sinon.stub(userModel, 'deleteUserById').throws(new Error('Error deleting user'));
+
+    sinon.stub(userModel, 'getRoot')
+      .onFirstCall()
+      .resolves({ id: 0 })
+      .onSecondCall()
+      .resolves({ id: 1 })
+      .onThirdCall()
+      .resolves({ id: 1 });
+
+    const response = await request(app).post('/login').send({ email: 'Test', password: 'Test' });
+
+    await request(app)
+      .delete('/account/1')
+      .set('Authorization', response.body.token)
+      .send()
+      .expect(403)
+      .expect({ message: 'Error: Forbidden' });
+
+    await request(app)
+      .delete('/account/1')
+      .set('Authorization', response.body.token)
+      .send()
+      .expect(403)
+      .expect({ message: 'Error: Can\'t delete root user' });
+
+    await request(app)
+      .delete('/account/2')
+      .set('Authorization', response.body.token)
+      .send()
+      .expect(404)
+      .expect({ message: 'Error deleting user' });
+  });
+
+  it('Account Controller: Delete Success', async () => {
+    sinon.stub(userModel, 'getUsersByAttribute')
+      .withArgs('id', 1).resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100', risk: 0,
+      }]);
+    sinon.stub(userModel, 'getUsersByTwoAttributes')
+      .resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100',
+      }]);
+
+    sinon.stub(userModel, 'deleteUserById').resolves({
+      user: {
+        id: 1, name: 'Test2', password: '234', email: 'Test2', funds: '1000', risk: 0,
+      },
+      message: 'User succesfully deleted.',
+    });
+
+    sinon.stub(userModel, 'getRoot').resolves({ id: 1 });
+
+    const response = await request(app).post('/login').send({ email: 'Test', password: 'Test' });
+
+    await request(app)
+      .delete('/account/2')
+      .set('Authorization', response.body.token)
+      .send()
+      .expect(200)
+      .expect({
+        user: {
+          id: 1, name: 'Test2', password: '234', email: 'Test2', funds: '1000', risk: 0,
+        },
+        message: 'User succesfully deleted.',
+      });
+  });
+
+  it('Account Controller: Get Error', async () => {
+    const getUserStub = sinon.stub(userModel, 'getUsersByAttribute')
+      .withArgs('id', 1).resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100', risk: 0,
+      }]);
+    sinon.stub(userModel, 'getUsersByTwoAttributes')
+      .resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100',
+      }]);
+    getUserStub.withArgs('id', 3).throws(new Error('Account Controller : Get Error'));
+    const response = await request(app).post('/login').send({ email: 'Test', password: 'Test' });
+    await request(app)
+      .get('/account/3')
+      .set('Authorization', response.body.token)
+      .send()
+      .expect(404)
+      .expect({ message: 'Account Controller : Get Error' });
+  });
+
+  it('Account Controller: Get Success', async () => {
+    sinon.stub(userModel, 'getUsersByTwoAttributes')
+      .resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100',
+      }]);
+    const getUserStub = sinon.stub(userModel, 'getUsersByAttribute')
+      .withArgs('id', 1).resolves([{
+        id: 1, name: 'Test', email: 'Test', funds: '100', risk: 0,
+      }]);
+    getUserStub.withArgs('id', 2).resolves([{
+      id: 2, name: 'Test2', email: 'Test2', funds: '200', risk: 1,
+    }]);
+
+    const token = await request(app).post('/login').send({ email: 'Test', password: 'Test' });
+
+    let response = await request(app)
+      .get('/account/1')
+      .set('Authorization', token.body.token)
+      .send()
+      .expect(200);
+
+    expect(response.body).toHaveProperty('user');
+    expect(response.body.user).toEqual({
+      name: 'Test',
+      email: 'Test',
+      risk: 0,
+      funds: '100',
+    });
+    response = await request(app)
+      .get('/account/2')
+      .set('Authorization', token.body.token)
+      .send()
+      .expect(200);
+
+    expect(response.body).toHaveProperty('user');
+    expect(response.body.user).toEqual({
+      name: 'Test2',
+      email: 'Test2',
+    });
+  });
+
+  it('Account Controller: Withdraw Success', async () => {
     sinon.stub(userModel, 'withdraw').resolves({
       name: 'Test',
       email: 'test',
@@ -40,7 +175,7 @@ describe('Account Controller Test ', () => {
       });
   });
 
-  it('Account Controller: Withdraw error', async () => {
+  it('Account Controller: Withdraw Error', async () => {
     sinon.stub(userModel, 'withdraw').throws(new Error('Error: Insufficient funds.'));
     sinon.stub(userModel, 'getUsersByTwoAttributes')
       .resolves([{
@@ -69,7 +204,7 @@ describe('Account Controller Test ', () => {
       .expect({ message: 'Error: Insufficient funds.' });
   });
 
-  it('Account Controller: Deposit success', async () => {
+  it('Account Controller: Deposit Success', async () => {
     sinon.stub(userModel, 'deposit').resolves({
       name: 'Test',
       email: 'test',
@@ -96,7 +231,7 @@ describe('Account Controller Test ', () => {
         },
       });
   });
-  it('Account Controller: Deposit error', async () => {
+  it('Account Controller: Deposit Error', async () => {
     sinon.stub(userModel, 'deposit').throws(new Error('Deposit error.'));
 
     sinon.stub(userModel, 'getUsersByTwoAttributes')
@@ -126,7 +261,7 @@ describe('Account Controller Test ', () => {
       .expect({ message: 'Deposit error.' });
   });
 
-  it('Account Controller : Save Account success', async () => {
+  it('Account Controller : Save Account Success', async () => {
     sinon.stub(userModel, 'getUsersByTwoAttributes')
       .resolves([{
         id: 1, name: 'Test', email: 'Test', funds: '100',
