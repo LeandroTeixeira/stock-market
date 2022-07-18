@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-plusplus */
 function sum(a, b) {
-  console.log(a, b);
   if (a.toString() === '0') return b.toString();
   if (b.toString() === '0') return a.toString();
 
@@ -97,15 +96,15 @@ function mul(a, b) {
 
   const s1 = a.toString().split(/,|\./);
   const s2 = b.toString().split(/,|\./);
-  if (s1.length === 1) s1.push('0');
-  if (s2.length === 1) s2.push('0');
-  while (s1[1].length < s2[1].length) s1[1] += '0';
-  while (s2[1].length < s1[1].length) s2[1] += '0';
-  if ((s1[0].length + s1[1].length) > 10) return (Number(a) * Number(b)).toString();
-  const offset = s1[1].length << 1;
-  const aux1 = s1[0] + s1[1];
-  const aux2 = s2[0] + s2[1];
-  const result = (Number(aux1) * Number(aux2)).toString();
+  let offset = 0;
+  let result;
+  if (s1.length === 2) offset += s1[1].length;
+  if (s2.length === 2) offset += s2[1].length;
+  const [aux1, aux2] = [s1.join(''), s2.join('')];
+
+  if (aux1.length + aux2.length > 16) result = (BigInt(aux1) * BigInt(aux2)).toString();
+  else result = (Number(aux1) * Number(aux2)).toString();
+
   let string = `${result.slice(0, result.length - offset)}.${result.slice(result.length - offset)}`;
   while (string[string.length - 1] === '0') string = string.substring(0, string.length - 1);
   if (string[string.length - 1] === '.') string = string.substring(0, string.length - 1);

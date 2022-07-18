@@ -71,18 +71,19 @@ describe('Arithmetics Test ', () => {
   });
 
   it('Arithmetics: Test Mul', () => {
+    expect(mul('15,000000000042', 12.31)).toEqual('184.65000000051702');
+    expect(mul('15,000000000000000042', 12.31)).toEqual('184.65000000000000051702');
+
     expect(mul('-1,14', '-6,87')).toEqual('7.8318');
 
     expect(mul(15.96, 12.31)).toEqual('196.4676');
     expect(mul(15.96, 12.1)).toEqual('193.116');
     expect(mul(4, 2.5)).toEqual('10');
-    // expect(mul(15.96, '12,00000000000000000000001')).toEqual('191.5200000000000000000001596');
     expect(mul(15, 12)).toEqual('180');
     expect(mul(15.85, 12)).toEqual('190.2');
     expect(mul(15, 12.85)).toEqual('192.75');
     expect(mul(15.42, 12.31)).toEqual('189.8202');
     expect(mul(15.042, 12.31)).toEqual('185.16702');
-    expect(mul('15,0000042', 12.31)).toEqual('184.650051702');
     expect(mul(-1.14, 6.87)).toEqual('-7.8318');
     expect(mul(1.14, -6.87)).toEqual('-7.8318');
     expect(mul(0, 6.3)).toEqual('0');

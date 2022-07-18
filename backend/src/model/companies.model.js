@@ -1,6 +1,7 @@
 const { Company } = require('../../models/index');
 const { sum, sub } = require('../utils/arithmetic');
 const timeStocksModel = require('./timeStocks.model');
+require('dotenv').config();
 
 const COMPANY_LIST = [
   {
