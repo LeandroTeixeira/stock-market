@@ -8,7 +8,7 @@
     "test-coverage": "npm run restore-test && jest --watchAll --coverage",
     "restore": "npx sequelize db:migrate:undo:all --env development && npx sequelize db:migrate --env development && npx sequelize db:seed:all --env development",
     "restore-test": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all ",
-    "dev": "npm run restore && nodemon src/index.js",
+    "dev": "nodemon src/index.js",
     "start": "npm run restore && node src/index.js",
     "generator": "node ./src/data/converter.js"
   },
@@ -37,6 +37,7 @@
     "sinon": "^14.0.0"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
