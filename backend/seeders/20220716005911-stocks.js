@@ -26,7 +26,7 @@ module.exports = {
 
         for (let j = 0; j < max; j += 1) {
           stocks.push({
-            company_Id: i,
+            company_id: i,
             createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
             updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
           });

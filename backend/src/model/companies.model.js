@@ -5,7 +5,8 @@ const timeStocksModel = require('./timeStocks.model');
 
 require('dotenv').config();
 
-const COMPANY_LIST = [
+// eslint-disable-next-line no-unused-vars
+const COMPANY_LIST1 = [
   {
     name: 'A',
     fullName: 'Agilent Technologies Inc',
@@ -530,10 +531,220 @@ const COMPANY_LIST = [
   }, {
     name: 'AZO',
     fullName: 'Autozone Inc',
+  },
+  {
+    name: 'B',
+    fullName: 'Barnes Group Inc',
+  },
+  {
+    name: 'BA',
+    fullName: 'Boeing',
+  },
+  {
+    name: 'BAC',
+    fullName: 'Bank of America',
+  },
+  {
+    name: 'BAM',
+    fullName: 'Brooksfield Asset Management Inc',
+  },
+  {
+    name: 'BBD',
+    fullName: 'Banco Bradesco SA',
+  },
+  {
+    name: 'BBVA',
+    fullName: 'Banco Bilbao Vizcaya Argenataria SA',
+  },
+  {
+    name: 'BBY',
+    fullName: 'Best Buy Co Inc',
+  },
+  {
+    name: 'BCE',
+    fullName: 'BCE Inc',
+  },
+  {
+    name: 'BCH',
+    fullName: 'Banco de Chile',
+  },
+  {
+    name: 'BCS',
+    fullName: 'Barclays',
+  },
+  {
+    name: 'BDC',
+    fullName: 'Belden Inc',
+  },
+  {
+    name: 'BDL',
+    fullName: "Flanigan' Entreprise Inc",
+  },
+  {
+    name: 'BDN',
+    fullName: 'Brandywine Realty Trust',
   }, {
-    name: 'AZZ',
-    fullName: 'AZZ Inc',
-  }];
+    name: 'BG',
+    fullName: 'Bunge Ltd',
+  },
+  {
+    name: 'BGB',
+    fullName: 'Blackstone Strategic Credit Fund',
+  },
+  {
+    name: 'BGI',
+    fullName: 'Birks Group Inc',
+  },
+  {
+    name: 'BGS',
+    fullName: 'B&G Foods Inc',
+  },
+  {
+    name: 'BH',
+    fullName: 'Biglari Holdings Inc',
+  },
+  {
+    name: 'BHB',
+    fullName: 'Bar Harbor Bankshares',
+  },
+  {
+    name: 'BHE',
+    fullName: 'Benchmark Eletronics',
+  },
+  {
+    name: 'BIDU',
+    fullName: 'Baidu',
+  },
+  {
+    name: 'BIIB',
+    fullName: 'Biogen',
+  },
+  {
+    name: 'BIO',
+    fullName: 'Bionovate Technologies Corp',
+  },
+  {
+    name: 'BIOS',
+    fullName: 'BioPlus Acquisition Corp',
+  },
+  {
+    name: 'BK',
+    fullName: 'Bank of New York',
+  },
+  {
+    name: 'BKD',
+    fullName: 'Brookdale Senior Living Inc',
+  },
+  {
+    name: 'BKE',
+    fullName: 'Buckle Inc',
+  },
+  {
+    name: 'BKH',
+    fullName: 'Black Hills Corp',
+  },
+
+  {
+    name: 'BLK',
+    fullName: 'BlackRock',
+  },
+  {
+    name: 'BLX',
+    fullName: 'Foreign Trade Bank of Latin America Inc',
+  },
+  {
+    name: 'BMA',
+    fullName: 'Banco Macro SA',
+  },
+  {
+    name: 'BMO',
+    fullName: 'Bank of Montreal',
+  },
+  {
+    name: 'BR',
+    fullName: 'Broadridge Finantial Solutions Inc',
+  },
+  {
+    name: 'BRN',
+    fullName: 'Barnwell Industries Inc',
+  },
+  {
+    name: 'BRO',
+    fullName: 'Bro & Brown Inc',
+  },
+  {
+    name: 'BSX',
+    fullName: 'Boston Scientific Group',
+  },
+  {
+    name: 'BTI',
+    fullName: 'British American Tobacco',
+  },
+  {
+    name: 'BTN',
+    fullName: 'Ballantyne Strong Inc',
+  },
+  {
+    name: 'BTO',
+    fullName: 'John Hancock Financial Opportunities Fund',
+  },
+  {
+    name: 'BTX',
+    fullName: 'Brooklyn Immunotherapeutics Inc',
+  },
+  {
+    name: 'BUR',
+    fullName: 'Burford Capital LTD',
+  },
+  {
+    name: 'BVN',
+    fullName: 'Compania de Minas Buenaventura SAA',
+  },
+  {
+    name: 'BWA',
+    fullName: 'Borgwarner Inc',
+  },
+  {
+    name: 'BXP',
+    fullName: 'Boston Properties',
+  },
+];
+
+const COMPANY_LIST = [
+  {
+    name: 'C',
+    fullName: 'Citigroup',
+  },
+  {
+    name: 'CABO',
+    fullname: 'Cable One Inc',
+  },
+  {
+    name: 'CAG',
+    fullName: 'Conagra Brands Inc',
+  },
+  {
+    name: 'CAH',
+    fullName: 'Cardinal Health Inc',
+  },
+  {
+    name: 'CAJ',
+    fullName: 'Canon',
+  },
+  {
+    name: 'CAKE',
+    fullName: 'Cheesecake Factory Inc',
+  },
+  {
+    name: 'CAL',
+    fullName: 'Caleres Inc',
+  },
+  {
+    name: 'CARS',
+    fullName: 'Cars.com Inc',
+  },
+
+];
 
 async function getCompanies() {
   const results = await Company.findAll({ attributes: ['id', 'name', 'fullName'] });

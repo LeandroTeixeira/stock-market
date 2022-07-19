@@ -9,6 +9,13 @@ describe('Login Controller Test ', () => {
     sinon.restore();
   });
 
+  it('Login Controller: Get Current Version', async () => {
+    await request(app)
+      .get('/version')
+      .expect(200)
+      .expect({ version: 'v1' });
+  });
+
   it('Login Controller : Post Login succesfull cases', async () => {
     const getStub = sinon.stub(userModel, 'getUsersByTwoAttributes').resolves(
       [{

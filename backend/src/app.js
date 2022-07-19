@@ -13,7 +13,7 @@ app.use(morgan('combined'));
 app.use(express.json());
 // app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/v1', apiV1);
-app.get('/current', (_, res) => res.status(200).json({ version: CURRENT_VERSION }));
+app.get('/version', (_, res) => res.status(200).json({ version: CURRENT_VERSION }));
 app.use('/', apiV1);
 
 // app.get('/*', (_, res) => {

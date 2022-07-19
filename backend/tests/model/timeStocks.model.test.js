@@ -58,11 +58,11 @@ describe('Time Stocks Model Test ', () => {
     const stock = await timeStocks.getAllStocksFromDay(COMPANY_LIST, newDay);
     expect(stock.length).toBe(COMPANY_LIST.length);
     const emptyStocks = stock.filter((data) => data === undefined);
-    // const nonEmptyStocks = stock.filter((data) => data !== undefined);
-    // const dataless = COMPANY_LIST.filter(
-    //   (company) => nonEmptyStocks.find((s) => s.companyName === company.name) === undefined,
-    // );
-    // console.log(dataless);
+     const nonEmptyStocks = stock.filter((data) => data !== undefined);
+     const dataless = COMPANY_LIST.filter(
+       (company) => nonEmptyStocks.find((s) => s.companyName === company.name) === undefined,
+     );
+     console.log("Dataless: ", dataless);
     expect(emptyStocks).toHaveLength(0);
     expect(stock.length).toBe(COMPANY_LIST.length);
     for (let i = 0; i < stock.length; i += 1) {
