@@ -26,6 +26,7 @@ jest.mock('../../src/model/companies.model', () => {
           high: '22.84',
           low: '21.74',
           date: '2022-07-05T00:00:00.000Z',
+          volume: 100,
         },
         };
       };

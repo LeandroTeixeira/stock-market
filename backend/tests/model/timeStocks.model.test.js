@@ -45,6 +45,7 @@ describe('Time Stocks Model Test ', () => {
     stocks.forEach((stock, index) => {
       expect(stock).toHaveProperty('companyName', COMPANY_LIST[index].name);
       expect(stock).toHaveProperty('fullName', COMPANY_LIST[index].fullName);
+
       expect(stock).toHaveProperty('date');
       expect(stock.date.getTime()).toBeGreaterThan(day1.getTime() - offset * 24 * 60 * 60 * 1000);
       expect(stock.date.getTime()).toBeLessThanOrEqual(day1.getTime());
@@ -58,11 +59,11 @@ describe('Time Stocks Model Test ', () => {
     const stock = await timeStocks.getAllStocksFromDay(COMPANY_LIST, newDay);
     expect(stock.length).toBe(COMPANY_LIST.length);
     const emptyStocks = stock.filter((data) => data === undefined);
-     const nonEmptyStocks = stock.filter((data) => data !== undefined);
-     const dataless = COMPANY_LIST.filter(
-       (company) => nonEmptyStocks.find((s) => s.companyName === company.name) === undefined,
-     );
-     console.log("Dataless: ", dataless);
+    const nonEmptyStocks = stock.filter((data) => data !== undefined);
+    const dataless = COMPANY_LIST.filter(
+      (company) => nonEmptyStocks.find((s) => s.companyName === company.name) === undefined,
+    );
+    console.log('Dataless: ', dataless);
     expect(emptyStocks).toHaveLength(0);
     expect(stock.length).toBe(COMPANY_LIST.length);
     for (let i = 0; i < stock.length; i += 1) {

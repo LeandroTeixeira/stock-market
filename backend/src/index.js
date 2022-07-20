@@ -12,14 +12,9 @@ const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(app);
 
-const dataPaths = {
-  full: path.join(__dirname, 'data', 'stockData.csv'),
-  test: path.join(__dirname, '..', 'tests', 'stockData-test.csv'),
-};
-
 const loadTimeStocks = async (p) => {
   const data = parseCSV(p).map((el, index) => {
-    if (index % 10 === 0) return el;
+    if (index % 3 === 0) return el;
     return undefined;
   }).filter((el) => el !== undefined);
   await timeStockModel.initializeStocks(data);
@@ -28,7 +23,7 @@ const loadTimeStocks = async (p) => {
 (async function startServer() {
   await mongoConnect();
 
-  await loadTimeStocks(dataPaths.test);
+  await loadTimeStocks(path.join(__dirname, '..', 'dbInitializer.csv'));
   // const req = http.request({
   //   host: 'localhost',
   //   path: '/',

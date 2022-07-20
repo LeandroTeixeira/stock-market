@@ -57,6 +57,7 @@ async function saveStock(stock) {
     high: stock.High,
     low: stock.Low,
     close: stock.Close,
+    volume: stock.Volume,
   });
   return { savedStock, response };
 }

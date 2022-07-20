@@ -7,7 +7,8 @@ module.exports = {
     await queryInterface.sequelize.query('ALTER TABLE Companies AUTO_INCREMENT = 1;');
 
     const data = COMPANY_LIST.map((company) => ({
-      ...company,
+      name: company.name,
+      fullName: company.fullName,
       createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
       updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
     }));
