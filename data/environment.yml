@@ -1,0 +1,14 @@
+name: Case Xp
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - notebook
+  - pandas
+  - scikit-learn
+  - pylint
+  - matplotlib
+  - flask
+  - keras
+  - tensorflow
+prefix: .\env

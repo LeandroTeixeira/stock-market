@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "(cd frontend && npm install) && (cd backend && npm install)",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set FLASK_ENV=development && python ./data/server.py"
+    "start": "set FLASK_ENV=development && python ./data/server.py",
+    "server": "npm start --prefix backend",
+    "client": "npm start --prefix frontend"
+
   },
   "repository": {
     "type": "git",
