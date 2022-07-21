@@ -3,12 +3,17 @@ const request = require('supertest');
 const sinon = require('sinon');
 const userModel = require('../../src/model/users.model');
 const app = require('../../src/app');
+const { mongoDisconnect } = require('../../src/utils/mongo');
+const { sequelize } = require('../../models');
 
 describe('Login Controller Test ', () => {
   afterEach(() => {
     sinon.restore();
   });
-
+  afterAll(async () => {
+    sequelize.close();
+    await mongoDisconnect();
+  });
   it('Login Controller: Get Current Version', async () => {
     await request(app)
       .get('/version')

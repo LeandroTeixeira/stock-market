@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 
-from predictor import predict
+from predictor import make_suggestions
 
 app = Flask(__name__, template_folder='../backend/coverage/', static_folder='../backend/coverage/')
 
@@ -18,33 +18,38 @@ def suggestions():
   available_assets = None
   risk = None
   time = None
+
   try:
-    if funds in body:
+
+    if "funds" in body:
       funds = body['funds']
     else:
-      return jsonify(message="Missing required field: funds",
-                     statusCode=400)
-    if assets_owned in body:
+      return "Missing required field: funds", 401
+    if "assetsOwned" in body:
       assets_owned = body['assetsOwned']
     else:
       return jsonify(message="Missing required field: assets_owned",
                      statusCode=400)
-    if available_assets in body:
+
+    if "availableAssets" in body:
       available_assets = body['availableAssets']
     else:
       return jsonify(message="Missing required field: available_assets",
                      statusCode=400)
-    if risk in body:
+
+    if "risk" in body:
       risk = body['risk']
     else:
       return jsonify(message="Missing required field: risk",
                      statusCode=400)
-    if time in body:
+
+    if "time" in body:
       time = body['time']
     else:
       return jsonify(message="Missing required field: time",
                      statusCode=400)
-    data = predict(funds, assets_owned, available_assets, risk, time)
+
+    data = make_suggestions(funds, assets_owned, available_assets, risk, time)
     return jsonify(statusCode=200,
                    body=data)
   except:

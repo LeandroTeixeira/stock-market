@@ -7,12 +7,14 @@ const {
 } = require('../../src/model/companies.model');
 const stocks = require('../../src/model/stocks.model');
 const timeStocks = require('../../src/model/timeStocks.model');
+const { mongoDisconnect } = require('../../src/utils/mongo');
 
 require('dotenv').config();
 /* eslint-disable no-undef */
 describe('Companies Model Test', () => {
-  afterAll(() => {
+  afterAll(async () => {
     sequelize.close();
+    await mongoDisconnect();
   });
 
   afterEach(() => {

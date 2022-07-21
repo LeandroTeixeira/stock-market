@@ -26,41 +26,64 @@ class InvestmentsController {
     }
     const [user] = await userModel.getUsersByAttribute('id', id);
     const root = await userModel.getRoot();
-    const owned = await stockModel.getStocksFromOwner(Number(id));
+    let owned = await stockModel.getStocksFromOwner(Number(id));
     let availables = await stockModel.getStocksFromOwner(Number(root.id));
     const companies = await companyModel.getCompanies();
     const stocks = [];
 
     for (let i = 0; i < companies.length; i += 1) {
-      const { companyMemo } = await this.getStockPrice({ key: 'fullName', value: companies[i].fullName });
+      const companyMemo = await this.getStockPrice({ key: 'fullName', value: companies[i].fullName });
       stocks.push(companyMemo);
     }
-    availables = availables.map((stock) => {
+
+    owned = owned.map((stock) => {
       const company = companies.find((c) => c.id === stock.companyId);
+
+      const asset = stocks.find((s) => s.companyMemo.fullName === company.fullName);
+
       return {
-        companyId: stock.companyId,
-        companyName: company.name,
-        available: stock.owned,
-      };
-    });
-    const availableAssets = availables.map((available) => {
-      const asset = stocks.find((stock) => stock.companyName === available.companyName);
-      return {
-        ...available,
+        id: company.id,
+        companyName: company.fullName,
+        stockPrice: asset.stockPrice,
+
         asset: {
-          open: asset.open,
-          close: asset.close,
-          high: asset.high,
-          low: asset.low,
-          date: asset.date,
+          open: asset.companyMemo.open,
+          high: asset.companyMemo.high,
+
+          close: asset.companyMemo.close,
+          low: asset.companyMemo.low,
+          date: asset.companyMemo.date,
         },
       };
     });
-    const suggestions = await timeStockModel.getSuggestions({
-      funds: user.funds, availableAssets, risk: user.risk, assetsOwned: owned, time,
+
+    availables = availables.map((stock) => {
+      const company = companies.find((c) => c.id === stock.companyId);
+      const asset = stocks.find((s) => s.companyMemo.fullName === company.fullName);
+
+      return {
+        id: company.id,
+        companyName: company.fullName,
+        available: stock.owned,
+        stockPrice: asset.stockPrice,
+        asset: {
+          open: asset.companyMemo.open,
+          high: asset.companyMemo.high,
+          close: asset.companyMemo.close,
+          low: asset.companyMemo.low,
+          date: asset.companyMemo.date,
+        },
+      };
     });
 
-    return res.status(200).json({ suggestions });
+    try {
+      const suggestions = await timeStockModel.getSuggestions({
+        funds: user.funds, availableAssets: availables, risk: user.risk, assetsOwned: owned, time,
+      });
+      return res.status(200).json({ suggestions });
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
   };
 
   buyStock = async (req, res) => {

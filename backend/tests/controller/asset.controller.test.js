@@ -5,6 +5,8 @@ const userModel = require('../../src/model/users.model');
 const companyModel = require('../../src/model/companies.model');
 const stockModel = require('../../src/model/stocks.model');
 const app = require('../../src/app');
+const { mongoDisconnect } = require('../../src/utils/mongo');
+const { sequelize } = require('../../models');
 
 jest.mock('../../src/model/companies.model', () => {
   const originalModule = jest.requireActual('../../src/model/companies.model');
@@ -35,6 +37,10 @@ jest.mock('../../src/model/companies.model', () => {
 describe('Asset Controller Test ', () => {
   afterEach(() => {
     sinon.restore();
+  });
+  afterAll(async () => {
+    sequelize.close();
+    await mongoDisconnect();
   });
   it('Asset Controller: Get Trends Success', async () => {
     await request(app)

@@ -7,7 +7,7 @@ require('dotenv').config();
 /* eslint-disable no-undef */
 describe('Parser Test', () => {
   it('Test if it successfully parses the file', () => {
-    const stockData = parseCSV(path.join(__dirname, 'stockData-test.csv'));
+    const stockData = parseCSV(path.join(__dirname, '..', 'dbInitializer.csv'));
     expect(stockData.length).toBeGreaterThanOrEqual(1000);
     const data = stockData[0];
 

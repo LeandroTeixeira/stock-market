@@ -1,9 +1,11 @@
 /* eslint-disable no-undef */
 const sinon = require('sinon');
+const axios = require('axios');
 const { COMPANY_LIST } = require('../../src/model/companies.model');
 const timeStocks = require('../../src/model/timeStocks.model');
 const timeStocksModel = require('../../src/model/timeStocks.mongo');
 const { mongoConnect, mongoDisconnect } = require('../../src/utils/mongo');
+const { sequelize } = require('../../models');
 
 describe('Time Stocks Model Test ', () => {
   beforeAll(async () => {
@@ -11,10 +13,125 @@ describe('Time Stocks Model Test ', () => {
   });
 
   afterAll(async () => {
+    sequelize.close();
     await mongoDisconnect();
   });
   afterEach(() => {
     sinon.restore();
+  });
+
+  it('Time Stocks: Get Suggestions', async () => {
+    const axiosStub = sinon.stub(axios, 'post');
+    axiosStub.onFirstCall().resolves({ data: { body: 'Error processing data' } });
+    axiosStub.onSecondCall().resolves({
+      data: {
+        body: {
+          suggestions: {
+            suggestedBuy: {
+              buyable: 175,
+              companyName: 'Acer Therapeutics Inc',
+              currentPrice: '9.449',
+              expectedPrice: '12.493',
+              expectedProfit: '532.752 total',
+              id: 4,
+            },
+            suggestedSell: [
+              {
+                companyName: 'Apple',
+                currentPrice: '148.751',
+                expectedPrice: '134.030',
+                expectedProfit: '14.721 per unit',
+                id: 1,
+              },
+              {
+                companyName: 'Ambev',
+                currentPrice: '5.938',
+                expectedPrice: '5.492',
+                expectedProfit: '0.446 per unit',
+                id: 2,
+              },
+              {
+                companyName: 'Abbott Laboratories',
+                currentPrice: '48.795',
+                expectedPrice: '43.677',
+                expectedProfit: '5.118 per unit',
+                id: 3,
+              },
+              {
+                companyName: 'Arthur J. Gallagher & Co.',
+                currentPrice: '57.926',
+                expectedPrice: '53.850',
+                expectedProfit: '4.076 per unit',
+                id: 11,
+              },
+              {
+                companyName: 'American Express',
+                currentPrice: '84.205',
+                expectedPrice: '75.210',
+                expectedProfit: '8.995 per unit',
+                id: 15,
+              },
+            ],
+          },
+        },
+      },
+    });
+    await expect(async () => {
+      await timeStocks.getSuggestions(1, 2, 3, 4, 5);
+    })
+      .rejects
+      .toThrow('Error processing data');
+
+    const response = await timeStocks.getSuggestions(1, 2, 3, 4, 5);
+    expect(response).toEqual({
+      suggestions: {
+        suggestedBuy: {
+          buyable: 175,
+          companyName: 'Acer Therapeutics Inc',
+          currentPrice: '9.449',
+          expectedPrice: '12.493',
+          expectedProfit: '532.752 total',
+          id: 4,
+        },
+        suggestedSell: [
+          {
+            companyName: 'Apple',
+            currentPrice: '148.751',
+            expectedPrice: '134.030',
+            expectedProfit: '14.721 per unit',
+            id: 1,
+          },
+          {
+            companyName: 'Ambev',
+            currentPrice: '5.938',
+            expectedPrice: '5.492',
+            expectedProfit: '0.446 per unit',
+            id: 2,
+          },
+          {
+            companyName: 'Abbott Laboratories',
+            currentPrice: '48.795',
+            expectedPrice: '43.677',
+            expectedProfit: '5.118 per unit',
+            id: 3,
+          },
+          {
+            companyName: 'Arthur J. Gallagher & Co.',
+            currentPrice: '57.926',
+            expectedPrice: '53.850',
+            expectedProfit: '4.076 per unit',
+            id: 11,
+          },
+          {
+            companyName: 'American Express',
+            currentPrice: '84.205',
+            expectedPrice: '75.210',
+            expectedProfit: '8.995 per unit',
+            id: 15,
+          },
+        ],
+      },
+    });
   });
 
   it('Time Stocks: Initialize Stocks', async () => {
@@ -63,6 +180,7 @@ describe('Time Stocks Model Test ', () => {
     const dataless = COMPANY_LIST.filter(
       (company) => nonEmptyStocks.find((s) => s.companyName === company.name) === undefined,
     );
+    // eslint-disable-next-line no-console
     console.log('Dataless: ', dataless);
     expect(emptyStocks).toHaveLength(0);
     expect(stock.length).toBe(COMPANY_LIST.length);

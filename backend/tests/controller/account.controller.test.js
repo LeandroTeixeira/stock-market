@@ -3,12 +3,17 @@ const request = require('supertest');
 const sinon = require('sinon');
 const userModel = require('../../src/model/users.model');
 const app = require('../../src/app');
+const { mongoDisconnect } = require('../../src/utils/mongo');
+const { sequelize } = require('../../models');
 
 describe('Account Controller Test ', () => {
   afterEach(() => {
     sinon.restore();
   });
-
+  afterAll(async () => {
+    sequelize.close();
+    await mongoDisconnect();
+  });
   it('Account Controller: Delete Error', async () => {
     sinon.stub(userModel, 'getUsersByAttribute')
       .withArgs('id', 1).resolves([{

@@ -1390,7 +1390,7 @@ async function getStockPriceFactory(referenceDay = Date.now()) {
       };
     }
     const u = (Number(sum(companyMemo.high, companyMemo.low))) / 2;
-    const o = (Number(sub(companyMemo.high, u))) / 2;
+    const o = (Number(sub(companyMemo.high, u))) / 3;
     const distribution = random.normal(u, o);
     const randomPrice = distribution();
     if (randomPrice < companyMemo.low) {

@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const userModel = require('../../src/model/users.model');
 const companyModel = require('../../src/model/companies.model');
 const stockModel = require('../../src/model/stocks.model');
+const timeStockModel = require('../../src/model/timeStocks.model');
 const { sequelize } = require('../../models');
 const app = require('../../src/app');
 const { mongoDisconnect } = require('../../src/utils/mongo');
@@ -15,12 +16,13 @@ jest.mock('../../src/model/companies.model', () => {
     __esModule: true,
     ...originalModule,
     getStockPriceFactory: async () => {
-      const id = 0;
+      const id = 1;
       return async function getStockPrice() {
         return {
           companyMemo:
         {
           id,
+          fullName: 'Apple',
           open: '22.84',
           close: '22.5',
           high: '22.84',
@@ -39,16 +41,13 @@ describe('Investment Controller Test ', () => {
     sinon.restore();
   });
 
-  beforeAll(() => {
-
-  });
-
   afterAll(() => {
     mongoDisconnect();
     sequelize.close();
   });
 
   it('Investment Controller: Get Suggestions Success', async () => {
+    jest.setTimeout(10000);
     sinon.stub(userModel, 'getUsersByTwoAttributes').resolves([{
       id: 1, name: 'Test', email: 'Test', funds: '100',
     }]);
@@ -56,16 +55,67 @@ describe('Investment Controller Test ', () => {
     sinon.stub(userModel, 'getUsersByAttribute').resolves([{ id: 1, funds: 5000, risk: 0 }]);
 
     sinon.stub(companyModel, 'getStockPriceFactory').returns();
+    sinon.stub(timeStockModel, 'getSuggestions').resolves({
+      suggestions: {
+        suggestedBuy: {
+          buyable: 175,
+          companyName: 'Acer Therapeutics Inc',
+          currentPrice: '9.449',
+          expectedPrice: '12.493',
+          expectedProfit: '532.752 total',
+          id: 4,
+        },
+        suggestedSell: [
+          {
+            companyName: 'Apple',
+            currentPrice: '148.751',
+            expectedPrice: '134.030',
+            expectedProfit: '14.721 per unit',
+            id: 1,
+          },
+          {
+            companyName: 'Ambev',
+            currentPrice: '5.938',
+            expectedPrice: '5.492',
+            expectedProfit: '0.446 per unit',
+            id: 2,
+          },
+          {
+            companyName: 'Abbott Laboratories',
+            currentPrice: '48.795',
+            expectedPrice: '43.677',
+            expectedProfit: '5.118 per unit',
+            id: 3,
+          },
+          {
+            companyName: 'Arthur J. Gallagher & Co.',
+            currentPrice: '57.926',
+            expectedPrice: '53.850',
+            expectedProfit: '4.076 per unit',
+            id: 11,
+          },
+          {
+            companyName: 'American Express',
+            currentPrice: '84.205',
+            expectedPrice: '75.210',
+            expectedProfit: '8.995 per unit',
+            id: 15,
+          },
+        ],
+      },
+    });
 
     const stubGetStocksFromOwner = sinon.stub(stockModel, 'getStocksFromOwner');
-    stubGetStocksFromOwner.withArgs(1).resolves(['Owned Stocks']);
-    stubGetStocksFromOwner.withArgs(0).resolves([{ companyId: 1, owned: 10 },
-      { companyId: 2, owned: 20 }, { companyId: 3, owned: 30 }]);
+    // stubGetStocksFromOwner.withArgs(1).resolves(['Owned Stocks']);
+    stubGetStocksFromOwner.resolves([{
+      companyId: 1,
+      companyName: 'Apple',
+      owned: 10,
+    }]);
 
     sinon.stub(companyModel, 'getCompanies').resolves([
-      { id: 1, fullName: 'Agilent Technologies Inc' },
-      { id: 2, fullName: 'Alcoa Corp' },
-      { id: 3, fullName: 'Ares Acquisition Corp' }]);
+      { id: 1, fullName: 'Apple' },
+    ]);
 
     const response = await request(app).post('/login').send({ email: 'Test', password: 'Test' });
 
@@ -76,10 +126,55 @@ describe('Investment Controller Test ', () => {
       .expect(200);
     expect(r.body).toHaveProperty('suggestions');
     const { suggestions } = r.body;
-    expect(suggestions).toHaveProperty('input');
-    expect(suggestions.input).toHaveProperty('funds', 5000);
-    expect(suggestions.input).toHaveProperty('risk', 0);
-    expect(suggestions.input).toHaveProperty('assetsOwned', ['Owned Stocks']);
+    expect(suggestions).toEqual({
+      suggestions: {
+        suggestedBuy: {
+          buyable: 175,
+          companyName: 'Acer Therapeutics Inc',
+          currentPrice: '9.449',
+          expectedPrice: '12.493',
+          expectedProfit: '532.752 total',
+          id: 4,
+        },
+        suggestedSell: [
+          {
+            companyName: 'Apple',
+            currentPrice: '148.751',
+            expectedPrice: '134.030',
+            expectedProfit: '14.721 per unit',
+            id: 1,
+          },
+          {
+            companyName: 'Ambev',
+            currentPrice: '5.938',
+            expectedPrice: '5.492',
+            expectedProfit: '0.446 per unit',
+            id: 2,
+          },
+          {
+            companyName: 'Abbott Laboratories',
+            currentPrice: '48.795',
+            expectedPrice: '43.677',
+            expectedProfit: '5.118 per unit',
+            id: 3,
+          },
+          {
+            companyName: 'Arthur J. Gallagher & Co.',
+            currentPrice: '57.926',
+            expectedPrice: '53.850',
+            expectedProfit: '4.076 per unit',
+            id: 11,
+          },
+          {
+            companyName: 'American Express',
+            currentPrice: '84.205',
+            expectedPrice: '75.210',
+            expectedProfit: '8.995 per unit',
+            id: 15,
+          },
+        ],
+      },
+    });
   });
 
   it('Investment Controller: Get Suggestion Error', async () => {

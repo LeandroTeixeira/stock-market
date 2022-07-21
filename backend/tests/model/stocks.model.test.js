@@ -8,10 +8,13 @@ const {
 } = require('../../src/model/companies.model');
 const userModel = require('../../src/model/users.model');
 require('dotenv').config();
+const { mongoDisconnect } = require('../../src/utils/mongo');
+
 /* eslint-disable no-undef */
 describe('Stocks Model Test', () => {
-  afterAll(() => {
+  afterAll(async () => {
     sequelize.close();
+    await mongoDisconnect();
   });
   afterEach(() => {
     sinon.restore();

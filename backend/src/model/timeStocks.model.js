@@ -1,4 +1,6 @@
+const axios = require('axios');
 const timeStocks = require('./timeStocks.mongo');
+
 // eslint-disable-next-line no-unused-vars
 async function getStockFromDay(company, day = Date.now()) {
   // console.log(company);
@@ -83,27 +85,18 @@ async function getSuggestions({
   funds, assetsOwned, availableAssets, risk, time,
 }) {
   // await alguma coisa
-  const buy = [{
-    companyId: null,
-    amount: null,
-    date: null,
-    expectedPrice: [null, 'High/Low/avg'],
-
-    totalSpenditure: null,
-  }];
-  const sell = [{
-    companyId: null,
-    amount: null,
-    date: null,
-    expectedPrice: [null, 'High/Low/avg'],
-    totalProfit: null,
-  }];
+  // console.log(funds, assetsOwned, availableAssets, risk, time);
+  const response = await axios
+    .post('http://localhost:5000/suggestions/', {
+      funds,
+      assetsOwned,
+      availableAssets,
+      risk,
+      time: new Date(Date.now() + time * 24 * 60 * 60 * 1000),
+    });
+  if (response.data.body === 'Error processing data') throw new Error('Error processing data');
   return {
-    suggestedBuy: buy,
-    suggestedSell: sell,
-    input: {
-      funds, assetsOwned, availableAssets, risk, time,
-    },
+    ...response.data.body,
   };
 }
 

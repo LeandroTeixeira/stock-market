@@ -22,7 +22,7 @@ describe('Stocks Model Test', () => {
     users = await usersModel.getUsersByAttribute('email', 'root');
     expect(users.length).toBe(1);
     expect(users[0].name).toEqual('root');
-    expect(users[0].funds).toEqual('0');
+    expect(users[0].funds).toEqual('1000000000000');
   });
 
   it('Users Model: GetUsersByTwoAttributes', async () => {
@@ -32,7 +32,7 @@ describe('Stocks Model Test', () => {
     users = await usersModel.getUsersByTwoAttributes('email', 'root', 'password', process.env.MYSQL_DEV_PASSWORD);
     expect(users.length).toBe(1);
     expect(users[0].name).toEqual('root');
-    expect(users[0].funds).toEqual('0');
+    expect(users[0].funds).toEqual('1000000000000');
   });
 
   it('Users Model: Upsert and Delete User', async () => {
@@ -74,7 +74,7 @@ describe('Stocks Model Test', () => {
     const fundsSeller = seller.funds;
     const fundsBuyer = buyer.funds;
 
-    expect(fundsSeller).toBe('0');
+    expect(fundsSeller).toBe('1000000000000');
     expect(fundsBuyer).toBe('5000');
 
     let response = await usersModel.transferFunds(buyer.id, seller.id, 2000);

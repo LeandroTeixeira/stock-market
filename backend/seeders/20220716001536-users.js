@@ -12,7 +12,7 @@ module.exports = {
         email: process.env.MYSQL_DEV_USER,
         password: process.env.MYSQL_DEV_PASSWORD,
         isRoot: true,
-        funds: '0',
+        funds: '1000000000000',
         createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
         updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
       }, {
