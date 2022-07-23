@@ -1,4 +1,3 @@
-# case-xp
 # Case XP
 <img src="./assets/Title-Image_1.jpg"  width=100% height=100%>
 
