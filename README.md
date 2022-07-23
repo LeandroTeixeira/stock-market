@@ -116,14 +116,14 @@ Boa parte da parte em Python foi desenvolvida estudando diretamente as APIs. Sci
 Para mais informações sobre os desenvolvimentos, incluindo os principais desafios encontrados, é possível conferir a documentação do [servidor principal (Node)](./backend/) e do [análise de dados (Python)](./data/).
 
 ## Referências do Projeto: 
-https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs?resource=download
-https://labelyourdata.com/articles/stock-market-and-machine-learning
-https://www.analyticsvidhya.com/blog/2021/10/machine-learning-for-stock-market-prediction-with-step-by-step-implementation/
-https://www.ijert.org/study-of-machine-learning-algorithms-for-stock-market-prediction
-https://neptune.ai/blog/predicting-stock-prices-using-machine-learning
-https://www.sciencedirect.com/science/article/pii/S1877050918307828
-https://www.ic.unicamp.br/~ra023169/publications/jp13.pdf
-https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
-https://www.cloudzero.com/blog/horizontal-vs-vertical-scaling#:~:text=While%20horizontal%20scaling%20refers%20to,%2C%20storage%2C%20or%20network%20speed.
-https://academind.com/tutorials/sql-vs-nosql
-https://medium.com/xp-inc/design-de-sistemas-distribu%C3%ADdos-escalonamento-vertical-e-escalonamento-horizontal-a162a2c66cbe#:~:text=Entende%2Dse%20por%20escalonamento%20horizontal,no%20design%20de%20sistemas%20distribu%C3%ADdos.
+- https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs?resource=download
+- https://labelyourdata.com/articles/stock-market-and-machine-learning
+- https://www.analyticsvidhya.com/blog/2021/10/machine-learning-for-stock-market-prediction-with-step-by-step-implementation/
+- https://www.ijert.org/study-of-machine-learning-algorithms-for-stock-market-prediction
+- https://neptune.ai/blog/predicting-stock-prices-using-machine-learning
+- https://www.sciencedirect.com/science/article/pii/S1877050918307828
+- https://www.ic.unicamp.br/~ra023169/publications/jp13.pdf
+- https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+- https://www.cloudzero.com/blog/horizontal-vs-vertical-scaling#:~:text=While%20horizontal%20scaling%20refers%20to,%2C%20storage%2C%20or%20network%20speed.
+- https://academind.com/tutorials/sql-vs-nosql
+- https://medium.com/xp-inc/design-de-sistemas-distribu%C3%ADdos-escalonamento-vertical-e-escalonamento-horizontal-a162a2c66cbe#:~:text=Entende%2Dse%20por%20escalonamento%20horizontal,no%20design%20de%20sistemas%20distribu%C3%ADdos
