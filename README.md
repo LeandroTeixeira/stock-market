@@ -76,7 +76,7 @@ Com o Anaconda Prompt:
 - Autenticação de usuário usando JWT, trazendo maior segurança à aplicação.
 - Dados reais do valor de mais de 140 empresas ao longo de 2 anos cuidadosamente selecionados e preparados para oferecer a melhor experiência ao usuário (simulação de uma base de dados com dados reais e um volume de dados capaz de causar um impacto realista na performance).
 - Tabelas usuário e companhia implementadas em MySQL utilizando Sequelize. Mais de 30 mil dados reais de ações implementadas em NoSQL utilizando Mongoose (escolha da database a ser utilizada leva em conta a integridade referencial exigida por cada tabela e também se o melhor escalonamento a ser usado é o horizontal ou o vertical. Para mais informações sobre a diferença entre os diferentes escalonamentos, acesse https://medium.com/xp-inc/design-de-sistemas-distribu%C3%ADdos-escalonamento-vertical-e-escalonamento-horizontal-a162a2c66cbe#:~:text=Entende%2Dse%20por%20escalonamento%20horizontal,no%20design%20de%20sistemas%20distribu%C3%ADdos).
-- Utilização de princípios e técnicas avançadas como factory, singleton e memoization para garantir eficiência ao lidar com tantos dados (memoization é uma forma de salvar os resultados de operações complexas para poupar processamento caso a mesma operação seja necessária de novo. Para quantias pequenas de dados em um servidor que não fica no ar por muito tempo, o custo em tempo e memória de preparar essa estrutura costuma não compensar os ganhos. Para um servidor acessando um banco de dados com milhões de dados, o ganho é relevante).
+- Utilização de princípios e técnicas avançadas como factory e memoization para garantir eficiência ao lidar com tantos dados (memoization é uma forma de salvar os resultados de operações complexas para poupar processamento caso a mesma operação seja necessária de novo. Para quantias pequenas de dados em um servidor que não fica no ar por muito tempo, o custo em tempo e memória de preparar essa estrutura costuma não compensar os ganhos. Para um servidor acessando um banco de dados com milhões de dados, o ganho é relevante).
 - Implementação de uma aritmética própria para trazer uma precisão numérica maior do que computadores costumam oferecer (computadores não são capazes de representar de forma precisa números que não podem ser expressos na base 2; isso acarreta em uma precisão que começa a decair por volta da décima quinta casa decimal. O mercado de ações lida todos os anos com bilhões de operações, frequentemente com números com precisão de mais de duas casas decimais. Para impedir que essa representação aliada com essa quantidade de dados cause problemas a longo prazo, foi desenvolvida uma aritmética para dar às operações de adição, subtração e multiplicação toda a precisão necessária).
 </details>
 
@@ -120,7 +120,9 @@ Boa parte da parte em Python foi desenvolvida estudando diretamente as APIs. Sci
 
 Para mais informações sobre os desenvolvimentos, incluindo os principais desafios encontrados, é possível conferir a documentação do [servidor principal (Node)](./backend/) e do [análise de dados (Python)](./data/).
 
-## Referências do Projeto: 
+<details>
+<summary>Referências do Projeto</summary>
+
 - https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs?resource=download
 - https://labelyourdata.com/articles/stock-market-and-machine-learning
 - https://www.analyticsvidhya.com/blog/2021/10/machine-learning-for-stock-market-prediction-with-step-by-step-implementation/
@@ -136,3 +138,8 @@ Para mais informações sobre os desenvolvimentos, incluindo os principais desaf
 - https://en.wikipedia.org/wiki/Coefficient_of_determination
 - https://www.analyticsvidhya.com/blog/2020/03/one-hot-encoding-vs-label-encoding-using-scikit-learn/
 - https://pythonistaplanet.com/flask/
+- https://engsoftmoderna.info/cap6.html#f%C3%A1brica
+- https://en.wikipedia.org/wiki/Singleton_pattern
+- https://medium.com/xp-inc/a-ci%C3%AAncia-de-dados-com-foco-no-cliente-33bf7c209436
+
+</details>
