@@ -32,6 +32,8 @@ Com o Anaconda Prompt:
 - Use `set FLASK_ENV=development` e `set FLASK_APP=server.py` para configurar o flask.
 - Para executar, use `flask run`
 
+_Nota: se a rota GET investimentos/:id estiver demorando demais para ser executada, pode ser necessário apertar Enter no Anaconda Prompt. Este problema é causado por problemas de versão entre o sci-kit Learn instalado no procesos e o utilizado no desenvolvimento._
+
 
 ## Modo de utilização 
 _Nota: Por padrão, todas as rotas se localizam em http://localhost:5000/_ 
