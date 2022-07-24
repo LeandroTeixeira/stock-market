@@ -41,7 +41,7 @@ _Nota2: Variáveis do tipo "Number" aceitam qualquer valor numérico, seja ele i
 #### Rota POST /suggestions/ 
 - Entrada: 
 ![POST Suggestions Input](../assets/POST-Suggestions-Input.jpg)
-- Saída:
+- Saída (Exemplo):
 ![POST Suggestions Output](../assets/POST-Suggestions-Response.jpg)
 
 ## Desenvolvimento e desafios encontrados
