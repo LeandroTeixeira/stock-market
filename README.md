@@ -132,3 +132,7 @@ Para mais informações sobre os desenvolvimentos, incluindo os principais desaf
 - https://www.cloudzero.com/blog/horizontal-vs-vertical-scaling#:~:text=While%20horizontal%20scaling%20refers%20to,%2C%20storage%2C%20or%20network%20speed.
 - https://academind.com/tutorials/sql-vs-nosql
 - https://medium.com/xp-inc/design-de-sistemas-distribu%C3%ADdos-escalonamento-vertical-e-escalonamento-horizontal-a162a2c66cbe#:~:text=Entende%2Dse%20por%20escalonamento%20horizontal,no%20design%20de%20sistemas%20distribu%C3%ADdos
+- https://zerotomastery.io/courses/learn-tensorflow/#Project
+- https://en.wikipedia.org/wiki/Coefficient_of_determination
+- https://www.analyticsvidhya.com/blog/2020/03/one-hot-encoding-vs-label-encoding-using-scikit-learn/
+- https://pythonistaplanet.com/flask/
