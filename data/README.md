@@ -12,7 +12,7 @@ O mercado de ações possui diversas informações fluindo a todo momento. Surge
 6. Validação de grupos e criação de perfis de usuário
 7. Avaliação e testes
 
-Esses passos não são seguidos a risca devido a simplificações e é importante entender os impactos delas no projeto para extrair qualquer valor deste experimento. Para começar, devido à dificuldade de encontrar uma base de dados de qualidade, o contexto do cliente foi adaptado aos dados e não o contrário. Na ausência de dados reais de cliente, ao invés de segmentá-los usando um algoritmo como K-Means e estudar as segmentações, os perfis de usuários são supostos e trabalhados em cima (um tipo baseado em como eu agiria e que tipo de comportamento eu esperaria e o outro sendo o comportamento oposto ao meu). 
+Esses passos não são seguidos a risca devido a simplificações e é importante entender os impactos delas no projeto para extrair qualquer valor deste experimento. Para começar, devido à dificuldade de encontrar uma base de dados de qualidade, o contexto do cliente foi adaptado aos dados e não o contrário. Na ausência de dados reais de cliente, ao invés de segmentá-los usando um algoritmo como K-Means e estudar as segmentações, os perfis de usuários são supostos e trabalhados em cima (um tipo baseado em como eu agiria e o outro sendo o comportamento oposto ao meu). 
 
 Efetivamente, trata-se de um projeto que identificou dois tipos de usuário e desenvolveu algoritmos para dar-lhes valor. Para possíveis versões futuras do projeto, é necessário generalizá-lo através deste framework para expandir a gama de consumidores que podem usá-lo.
 
