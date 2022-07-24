@@ -35,6 +35,7 @@ Com o Anaconda Prompt:
 
 ## Modo de utilização 
 _Nota: Por padrão, todas as rotas se localizam em http://localhost:5000/_ 
+
 _Nota2: Variáveis do tipo "Number" aceitam qualquer valor numérico, seja ele inteiro, decimal ou string_
 
 #### Rota POST /suggestions/ 
@@ -67,7 +68,7 @@ A ideia original era pegar os dados que iam até 2017 e convertê-los em dados a
 
 A parte mais desafiadora do projeto. A minha experiência prévia com algoritmos de ML era majoritariamente teórica. A experiência prática consistia em entender os processos necessários para implementar um. Os problemas (reais ou simulados) resolvidos eram zero, apesar de eu ter chegado a implementar um [algoritmo para simular bases de dados para praticar](https://github.com/LeandroTeixeira/Dataset-Generator).
 
-Apesar disso, o desafio de prever mercado de ações com ML não era algo impensado para mim. Na trilha que construí até o certificado de TensorFlow que busco há um [curso](https://zerotomastery.io/courses/learn-tensorflow/#Project) que tem como projeto final um algoritmo que usa TensorFlow para resolver esse problema. Se existe uma solução satisfatória para ele, é através de deep learning. Mais referências sobre podem ser encontradas no arquivo [Trial and Error]() que detalha minha jornada de desenvolvimento.
+Apesar disso, o desafio de prever mercado de ações com ML não era algo impensado para mim. Na trilha que construí até o certificado de TensorFlow que busco há um [curso](https://zerotomastery.io/courses/learn-tensorflow/#Project) que tem como projeto final um algoritmo que usa TensorFlow para resolver esse problema. Se existe uma solução satisfatória para ele, é através de deep learning. Mais referências sobre podem ser encontradas no arquivo [Trial and Error](https://github.com/LeandroTeixeira/case-xp/blob/main/data/ML-Models/Trial_and_error%20-%20Model%20Selection.ipynb) que detalha minha jornada de desenvolvimento.
 
 Sabendo disso, encarei o problema desde o início como algo que fugia das minhas capacidades e poderia muito bem não ser resolvido de forma satisfatória. Por conta disso, optei por narrar toda a minha jornada de desenvolvimento no arquivo Trial and Error com o intuito principal de, caso uma solução razoável não pudesse ser encontrada, todas as minhas tentativas até ela ficassem registradas.
 
