@@ -1,4 +1,4 @@
-name: C:\Users\Leo\Desktop\Projetos\case-xp\data\env
+name: LT-case-xp
 channels:
   - conda-forge
   - defaults
@@ -196,4 +196,4 @@ dependencies:
   - zipp=3.8.0=pyhd8ed1ab_0
   - zlib=1.2.12=h8cc25b3_2
   - zstd=1.5.2=h19a0ad4_0
-prefix: C:\Users\Leo\Desktop\Projetos\case-xp\data\env
+prefix: LT-case-xp
