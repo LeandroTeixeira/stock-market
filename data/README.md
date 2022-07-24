@@ -46,13 +46,13 @@ _Nota<sup>2</sup>: Variáveis do tipo "Number" aceitam qualquer valor numérico,
 
 ## Desenvolvimento e desafios encontrados
 
-#### Gerais
+### Gerais
 
 Por mais que eu venha usando Python com certa regularidade desde 2019, os últimos meses foram dedicados somente a JS. Por conta disso, em diversos momentos tive dificuldade com a linguagem, seja funções de manipulação de Strings e Arrays até detalhes mais complexos como quais argumentos são passados por valor e quais são passados por referência (principalmente na parte do algoritmo de Machine Learning onde foi necessário copiar tabelas e poder alterar uma sem afetar a outra era pré-requisito).
 
 Também senti falta das ferramentas que estou acostumado em JS, tais como o Linter e até mesmo a parte de testes de software.  Todavia, a maioria destes problemas foi se resolvendo conforme o servidor era desenvolvido. Para uma versão futura, da linguagem, fica a necessidade de entender e dominar ferramentas de teste. 
 
-#### Servidor Flask
+### Servidor Flask
 
 Transmitir os dados do algoritmo de ML para o backend principal em Node foi um desafio à parte. Não é a primeira vez que realizo esse tipo de conexão num contexto semiprofissional, tendo desenvolvido no Fórmula uma aplicação web que se comunicava com um backend em Python via Socket. Na época cheguei a tentar desenvolver essa comunicação via http, mas encontrei diversas dificuldades e abandonei em prol do tradicional socket.
 
@@ -60,7 +60,7 @@ As minhas motivações para sair da minha zona de conforto e abraçar o desconhe
 
 A primeira versão seguiu o tutorial do [pythonistaplanet](https://pythonistaplanet.com/flask/). Eventualmente, o projeto foi ganhando forma através de consultas à [documentação oficial](https://flask.palletsprojects.com/en/2.1.x/tutorial/). Aqui, o maior desafio foi entender como Flask lida com suas requisições e principalmente suas respostas, a forma de definir o status da solicitação, como o backend Node acessa esta informação e como transmiti-la de volta. Eventualmente, a documentação oficial se mostrou completa e clara o suficiente para me guiar à solução de todos os problemas referentes a este projeto.
 
-#### Base de Dados
+### Base de Dados
 
 Foi possível encontrar uma [base de dados](https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs?resource=download) com dados de ações que vão desde 1970 até 2017. A base possuía alguns problemas. O principal, ela possui diversos arquivos .txt identificados apenas pela sigla da companhia. Foi necessário fazer um processo lento e trabalhoso de ir até um [site referência](https://edition.cnn.com/markets) e identificar quais empresas estão associadas a cada sigla. Após a catalogação, um script pegava todos os dados dos .txt e salvava em um .csv para ser usado pelos algoritmos. No ápice, o banco de dados chegou a possuir pouco mais de 400 empresas catalogadas a mão, de um total de milhares presentes na base de dados.
 
@@ -70,7 +70,7 @@ Por último, após a seleção do algoritmo de Machine Learning e com uma base c
 
 A ideia original era pegar os dados que iam até 2017 e convertê-los em dados até 2023. Desta forma, seria possível fazer uma avaliação realista do algoritmo, usando dados reais para apontar qual seria o lucro obtido com as decisões. Porém, diante da necessidade de reduzir os dados, essa feature teve que ser abandonada.
 
-#### Algoritmo de Machine Learning e de sugestão
+### Algoritmo de Machine Learning e de sugestão
 
 A parte mais desafiadora do projeto. A minha experiência prévia com algoritmos de ML era majoritariamente teórica. A experiência prática consistia em entender os processos necessários para implementar um. Os problemas (reais ou simulados) resolvidos eram zero, apesar de eu ter chegado a implementar um [algoritmo para simular bases de dados para praticar](https://github.com/LeandroTeixeira/Dataset-Generator).
 
