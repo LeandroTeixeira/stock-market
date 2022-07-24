@@ -90,7 +90,7 @@ Legenda:
 ## Desenvolvimento e desafios encontrados
 
 
-#### Geral
+### Geral
 
 Foi dada uma ênfase muito grande a testes neste projeto para garantir a qualidade do código, principalmente do model. Testes costumavam ser meu ponto fraco e por isso estabeleci a meta pessoal de ter ao menos 95% das linhas cobertas, tendo obtido quase 99% no resultado final. Algumas funções como getStockPrice apresentam comportamento ligeiramente diferente se o ambiente for de testes, permitindo assim que o comportamento aleatório pensado para a função não interfira com o determinismo requerido para testá-la.
 
@@ -104,7 +104,7 @@ Esse tipo de técnica é perigosa porque pode surgir o cenário em que uma conve
 
 A multiplicação se mostrou mais simples. Visto que a ênfase desta feature é na precisão nas operações e não implementar o baixo nível, a solução envolveu converter os números para inteiros, multiplicá-los e adicionar casas decimais equivalentes à soma das casas decimais dos dois números. O resultado final é uma aritmética capaz de lidar com precisão numérica as operações de soma, subtração e adição.
 
-#### Model
+### Model
 
 O desenvolvimento do projeto começou pela coleta de dados. Com isso, quando foi a hora de desenvolver o model, já sabia que seria necessário construi-lo ao redor dos dados existentes. O primeiro passo foi decidir o que seria modelado e como. Já tinha em mente ao menos três tabelas, uma para a companhia, uma para o usuário e uma para os dados extraídos da base. Ainda existia margem para variações visto que questões como como a base se relacionaria com a companhia ainda não havia sido definida claramente. Todavia, o que restava para o primeiro passo era definir como a modelagem seria feita.
 
@@ -129,7 +129,7 @@ Memoization depende principalmente do princípio da idempotência (assume-se que
 
 Outro desafio encontrado no model foi estabelecer a comunicação entre os backends. Para isto, foi usada a biblioteca [axios](https://axios-http.com/docs/intro) no timeStocks model.
 
-#### Controller
+### Controller
 
 Construir o Controller foi um processo de conectar os requisitos com o model. O processo ocorreu sem problemas. Houve uma ênfase muito grande em autenticação, com a maioria das rotas exigindo-a. Em alguns casos, mesmo autenticado a operação pode não ocorrer da forma esperada se for uma tentativa de extrair dados de outro usuário.
 
