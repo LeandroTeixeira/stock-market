@@ -39,7 +39,7 @@ _Nota: Por padrão, todas as rotas se localizam por padrão em http://localhost:
 #### Rota GET /ativos
 - Entrada: `{"days": Number | undefined, "amount": Number | undefined}`
 - Saída (exemplo): 
-![POST Get Trends Output](../assets/POST-getTrends-Response.jpg)
+![POST Get Trends Output](../assets/POST-GetTrends-Response.jpg)
 
 #### Rota POST /conta/depósito <sup>2</sup>
 - Entrada: `{"valor": Number}`
