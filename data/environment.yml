@@ -1,0 +1,14 @@
+name: LT-case-xp
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - notebook
+  - pandas
+  - scikit-learn
+  - pylint
+  - matplotlib
+  - flask
+  - keras
+  - tensorflow
+prefix: LT-case-xp
