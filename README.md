@@ -118,6 +118,8 @@ Boa parte da parte em Python foi desenvolvida estudando diretamente as APIs. Sci
 
 Para mais informações sobre os desenvolvimentos, incluindo os principais desafios encontrados, é possível conferir a documentação do [servidor principal (Node)](./backend/) e da [análise de dados (Python)](./data/).
 
+## Bibliografia
+
 <details>
 <summary>Referências do Projeto</summary>
 
