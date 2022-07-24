@@ -17,7 +17,7 @@ Este projeto foi desenvolvido para o desafio técnico do processo seletivo da XP
 - API construída de forma versionada para reduzir o trabalho caso outras versões venham a ser implementadas.
 - Tabelas usuário e companhia implementadas em MySQL utilizando Sequelize.
 - Mais de 30 mil dados reais de ações implementadas em NoSQL utilizando Mongoose.
-    - Utilização de princípios e técnicas avançadas como factory, singleton e memoization para garantir eficiência ao lidar com tantos dados.
+    - Utilização de princípios e técnicas avançadas como factory e memoization para garantir eficiência ao lidar com tantos dados.
 - Implementação de uma aritmética própria para trazer uma precisão numérica maior do que computadores costumam oferecer.
 - Testes automatizados que cobrem mais de 98.5% das linhas do backend Node.
 - Análise e preparo dos dados usando ferramentas como Pandas, NumPy e Sci-kit Learn.
@@ -83,7 +83,7 @@ Com o Anaconda Prompt:
     
 - Testes automatizados que cobrem mais de 98.5% das linhas do backend Node (testes automatizados sempre foram minha maior dificuldade entre os conteúdos aprendidos na Trybe).
 - O plano original envolvia o desenvolvimento também de um frontend em React. Recebi um projeto mas abracei o desafio de tentar entregar três.
-- Aplicação web desenvolvida em Python utilizando Flask que permite o acesso às sugestões independentemente do backend em Node (antes de desenvolver o projeto, não sabia nada sobre Python web e não sabia nada sobre Flask. Ainda assim, abracei o desafio).
+- Aplicação web desenvolvida em Python utilizando Flask que permite o acesso às sugestões independentemente do backend em Node (antes de desenvolver o projeto, não sabia nada sobre Flask. Ainda assim, abracei o desafio).
 - Algoritmos de Machine Learning treinados com dezenas de milhões de dados para oferecerem as melhores previsões possíveis (já possuía experiência teórica com esses algoritmos mas nunca havia tentado resolver problemas usando eles. O problema em questão de previsão de ações, inclusive, era um que eu estava me preparando para ser capaz de resolvê-lo daqui há um ano).
 </details>
 
