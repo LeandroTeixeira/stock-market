@@ -54,7 +54,7 @@ Também senti falta das ferramentas que estou acostumado em JS, tais como o Lint
 
 #### Servidor Flask
 
-Transmitir os dados do algoritmo de ML para o backend principal em Node foi um desafio à parte. Não é a primeira vez que realizo esse tipo de conexão num contexto semi-profissional, tendo desenvolvido no Fórmula uma aplicação web que se comunicava com um backend em Python via Socket. Na época cheguei a tentar desenvolver essa comunicação via http, mas encontrei diversas dificuldades e abandonem em prol do tradicional socket.
+Transmitir os dados do algoritmo de ML para o backend principal em Node foi um desafio à parte. Não é a primeira vez que realizo esse tipo de conexão num contexto semi-profissional, tendo desenvolvido no Fórmula uma aplicação web que se comunicava com um backend em Python via Socket. Na época cheguei a tentar desenvolver essa comunicação via http, mas encontrei diversas dificuldades e abandonei em prol do tradicional socket.
 
 As minhas motivações para sair da minha zona de conforto e abraçar o desconhecido foram três. A primeira, ao desenvolver desta forma eu permito que qualquer pessoa possa usar o sistema de sugestão, bastando passar os dados da forma apresentada na seção anterior. A segunda, sendo o backend Node inteiro feito em cima desta forma de comunicação, estabeleço um padrão para todo projeto ao usar a mesma forma para ambos os servidores. A terceira, sendo este um desafio técnico para o processo seletivo da XP Inc, busco sempre que possível mostrar o meu alinhamento aos valores XP, neste caso, a capacidade de sair da zona de conforto sem medo de errar.
 
