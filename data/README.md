@@ -36,7 +36,7 @@ Com o Anaconda Prompt:
 ## Modo de utilização 
 _Nota: Por padrão, todas as rotas se localizam em http://localhost:5000/_ 
 
-_Nota2: Variáveis do tipo "Number" aceitam qualquer valor numérico, seja ele inteiro, decimal ou string_
+_Nota<sup>2</sup>: Variáveis do tipo "Number" aceitam qualquer valor numérico, seja ele inteiro, decimal ou string_
 
 #### Rota POST /suggestions/ 
 - Entrada: 
