@@ -83,8 +83,10 @@ Legenda:
 <sup>1</sup>: É necessário estar autenticado como root para acessar esta rota. <p></p>
 <sup>2</sup>: É necessário estar autenticado para acessar esta rota.
 
+## Test Coverage
+![Test Coverage](../assets/test-coverage.jpg)
 
-    
+
 ## Desenvolvimento e desafios encontrados
 
 
@@ -127,7 +129,8 @@ Memoization não foi a única técnica usada pensando em eficiência de tempo. O
 
 #### Controller
 
-Construir o Controller foi um processo de conectar os requisitos com o model. O processo, como um todo, ocorreu sem problemas. Em alguns pontos, decisões de implementação foram tomadas. No getByClient, optei por exigir autenticação do usuário e dados como fundos e risco só são exibidos se forem do mesmo usuário. No getByClients e getByAssets, por um erro de interpretação, foi construída uma mesma rota para ambos com a diferença sendo que uma recebe um parâmetro tipo = cliente e a outra recebe tipo = asset. Quando a dúvida foi esclarecida, o controller já estava pronto e optei por mantê-la.
+Construir o Controller foi um processo de conectar os requisitos com o model. O processo, como um todo, ocorreu sem problemas. Em alguns pontos, decisões de implementação foram tomadas. No getByClient, optei por exigir autenticação do usuário e dados como fundos e risco só são exibidos se forem do mesmo usuário. Deletar usuário é permitido somente ao root. No getByClients e getByAssets, por um erro de interpretação, foi construída uma mesma rota para ambos com a diferença sendo que uma recebe um parâmetro tipo = cliente e a outra recebe tipo = asset. Quando a dúvida foi esclarecida, o controller já estava pronto e optei por mantê-la.
 
 Algumas rotas foram adicionadas, as mais notáveis sendo GET /investimentos/:id e GET /ativos. A primeira oferece sugestões de investimentos baseadas na carteira atual enquanto a segunda retorna as trends atuais, podendo receber como parâmetro a quantidade de companhias e o dia usado para comparação (se algum não for especificado, os parâmetros serão o padrão de 5 companhias e as trends dos últimos 15 dias). Esta rota também usa memoization para aumentar a eficiência.
 
+A decisão notável aqui foi versionar a aplicação. Pensando no uso a longo prazo, achei relevante a ideia de poder refatorar o projeto e até mesmo remover rotas (como a forma como o getByAsset e getByClient estão implementados) sem comprometer a utilização dos habituados ao sistema. 

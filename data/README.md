@@ -44,8 +44,6 @@ _Nota2: Variáveis do tipo "Number" aceitam qualquer valor numérico, seja ele i
 - Saída:
 ![POST Suggestions Output](../assets/POST-Suggestions-Response.jpg)
 
-
-    
 ## Desenvolvimento e desafios encontrados
 
 #### Gerais
