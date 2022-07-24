@@ -91,14 +91,13 @@ Com o Anaconda Prompt:
 ## Lições aprendidas com o projeto
 <details>
     <summary>Você não sabe do que é capaz de fazer até tentar</summary>
-
+    <p></p>
 O projeto como um todo foi um dos maiores desafios da minha vida devido à quantidade de features que me propus a fazer, a complexidade destas features e o tempo disponível para fazê-las. Fui capaz de realizá-lo e apresentar uma qualidade maior do que eu imaginava que conseguiria. Ele coroa um ano em que eu superei meus limites a cada dia.
 </details>
-
 <details> 
-
 <summary>Não há problema em simplificar ideias. Nessas horas, o importante é reconhecer quais simplificações foram feitas, o impacto que elas causam no projeto e qual o caminho até a versão idealizada</summary>
-
+    <p></p>
+   
 Existem diversos exemplos disso no projeto, mas o mais marcante é o algoritmo de previsão. O que foi implementado é um sistema que sugere as ações para vender agora baseado em quais vão estar valendo menos daqui a N dias sendo N um valor maior que zero inserido pelo usuário. O plano original era apontar o dia entre hoje e hoje + N que a ação chegaria a seu maior preço, porém isso levaria a ter que calcular o valor da ação em todos os dias entre hoje e hoje + N, repetindo este processo para cada ação. Isso se mostrou pesado demais para meu sistema, então o projeto teve de ser simplificado.
 
 Da mesma forma, o algoritmo para sugerir as compras sugere o melhor lugar para se colocar todo o dinheiro. A ideia original era mais complexa; envolvia dar a melhor combinação de ações a se comprar (que poderia até mesmo não envolver a mais lucrativa dependendo do dinheiro que restasse), com um ajuste para a quantidade de risco que um usuário está disposto a tomar (pensando em mim enquanto usuário, preferiria uma recomendação com mais empresas que não acarretasse numa perda tão grande se uma falir de repente, mesmo que o resultado fosse um lucro menor) e levando em conta o lucro imediato resultante da venda das ações. Da mesma forma que o algoritmo de venda, fui incapaz de elaborar um algoritmo que resolvesse este problema sem acarretar em problemas no sistema.
@@ -106,15 +105,14 @@ Da mesma forma, o algoritmo para sugerir as compras sugere o melhor lugar para s
 Em ambos os casos, as simplificações ocorreram tanto por limitações do sistema quanto por limitações de prazo por terem sido a última feature a ser implementada, porém fui capaz de identificar os caminhos para a versão completa. Caso o projeto venha a ser expandido, o próximo passo aqui está definido e isso é o que importa no fim das contas.
 
 </details>
-
 <details>
 <summary> Ser capaz de sonhar grande implica também em ser capaz de entender a hora de abandonar uma ideia </summary>
-
+    <p></p>
 O principal exemplo de ideia abandonada (ao invés de simplificada) é o front end. Pouco tempo atrás desenvolvi um projeto pessoal de React do qual me orgulho muito e pretendia implementar algo parecido neste projeto, porém passar esse tempo todo sem prática com a tecnologia afetou a minha desenvoltura ao utilizá-la. No final das contas, acabei abandonando de vez a ideia ao notar que ela não agregaria tanto à API como eu imaginava. O código permanece no projeto e consiste basicamente de enxertos sem coerência do projeto que me orgulho.
 </details>
-
 <details>
     <summary>Na dúvida, a documentação oficial é sempre sua melhor amiga</summary>
+     <p></p>   
 Boa parte da parte em Python foi desenvolvida estudando diretamente as APIs. Sci-kit Learn, em especial, possui uma documentação muito bem estruturada e facilita a compreensão do próximo passo no desenvolvimento do modelo. Flask também não fica para trás. Mais do que vídeo aulas e artigos externos, a parte mais importante do meu desenvolvimento foi consultar o que os criadores da tecnologia tinham a dizer sobre como utilizá-la.
 </details>
 
