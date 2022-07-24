@@ -1,8 +1,6 @@
 # Case XP
 <img src="./assets/Title-Image_1.jpg"  width=100% height=100%>
 
-## Sumário
-
 ## Descrição do Projeto
 Este projeto foi desenvolvido para o desafio técnico do processo seletivo da XP Inc ocorrido no segundo semestre de 2022. A proposta consistia no desenvolvimento de um backend para uma aplicação de mercado de ações. Além disto, foi desenvolvido um sistema baseado em algoritmos de Machine Learning para sugerir movimentações futuras.
 
@@ -25,7 +23,7 @@ Este projeto foi desenvolvido para o desafio técnico do processo seletivo da XP
 - Análise e preparo dos dados usando ferramentas como Pandas, NumPy e Sci-kit Learn.
 - Algoritmos de Machine Learning treinados com dezenas de milhões de dados para oferecerem as melhores previsões possíveis.
     - Modelos salvos e disponíveis para o uso de qualquer pessoa independente do acesso aos dados
-- Informações detalhadas sobre o desenvolvimento do modelo, incluindo métricas de desempenho e tentativas mal-sucedidas.
+- Informações detalhadas sobre o desenvolvimento do modelo, incluindo métricas de desempenho e tentativas malsucedidas.
 - Algoritmo para, a partir das previsões, desenvolver a melhor estratégia para o mercado.
 - Aplicação web desenvolvida em Python utilizando Flask que permite o acesso às sugestões independentemente do backend em Node.
 
@@ -33,7 +31,7 @@ Este projeto foi desenvolvido para o desafio técnico do processo seletivo da XP
 Para mais informações sobre cada feature, inclusive detalhes de implementação e alternativas consideradas, é possível conferir a documentação do [servidor principal (Node)](./backend/) e do [análise de dados (Python)](./data/).
 
 ## Instalando e executando o projeto
-_nota: Este projeto foi desenvolvido no windows 10. Alguns comandos podem não funcionar corretamente em outros ambientes_
+_nota: Este projeto foi desenvolvido no Windows 10. Alguns comandos podem não funcionar corretamente em outros ambientes_
 
 #### Programas Necessários
 - [Conda versão 4.13 ou superior](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html#choosing-a-version-of-anaconda-or-miniconda)
@@ -118,7 +116,7 @@ Boa parte da parte em Python foi desenvolvida estudando diretamente as APIs. Sci
 </details>
 
 
-Para mais informações sobre os desenvolvimentos, incluindo os principais desafios encontrados, é possível conferir a documentação do [servidor principal (Node)](./backend/) e do [análise de dados (Python)](./data/).
+Para mais informações sobre os desenvolvimentos, incluindo os principais desafios encontrados, é possível conferir a documentação do [servidor principal (Node)](./backend/) e da [análise de dados (Python)](./data/).
 
 <details>
 <summary>Referências do Projeto</summary>
