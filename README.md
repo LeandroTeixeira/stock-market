@@ -52,7 +52,8 @@ Com o terminal:
 
 Com o Anaconda Prompt:
 - Entre na pasta do projeto usando comandos cd
-- Uma vez na pasta principal, crie um conda environment executando `conda env create --file environment.yml`
+- Uma vez na pasta principal, entre na pasta de dados com `cd data`
+- Crie um conda environment executando `conda env create --file environment.yml`
 - Ative o environment executando `activate LT-case-xp`
 - Use `set FLASK_ENV=development` e `set FLASK_APP=server.py` para configurar o flask.
 - Para executar, use `flask run`
