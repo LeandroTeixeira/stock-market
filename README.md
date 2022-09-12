@@ -1,8 +1,8 @@
-# Case XP
+# Stock Market
 <img src="./assets/Title-Image_1.jpg"  width=100% height=100%>
 
 ## Descrição do Projeto
-Este projeto foi desenvolvido para o desafio técnico do processo seletivo da XP Inc ocorrido no segundo semestre de 2022. A proposta consistia no desenvolvimento de um backend para uma aplicação de mercado de ações. Além disto, foi desenvolvido um sistema baseado em algoritmos de Machine Learning para sugerir movimentações futuras.
+Este projeto foi desenvolvido originalmente para o desafio técnico do processo seletivo da XP Inc ocorrido no segundo semestre de 2022. A proposta consistia no desenvolvimento de um backend para uma aplicação de mercado de ações. Além disto, foi desenvolvido um sistema baseado em algoritmos de Machine Learning para sugerir movimentações futuras.
 
 
 ## Features 
@@ -81,7 +81,7 @@ _Nota: se a rota GET investimentos/:id estiver demorando demais para ser executa
 </details>
 
 <details>
-    <summary>Não ter medo de desafios. Para trabalhar na XP, é necessário ter a coragem de um programador da XP</summary>
+    <summary>Não ter medo de desafios</summary>
     
 - Testes automatizados que cobrem mais de 98.5% das linhas do backend Node (testes automatizados sempre foram minha maior dificuldade entre os conteúdos aprendidos na Trybe).
 - O plano original envolvia o desenvolvimento também de um frontend em React. Recebi um projeto mas abracei o desafio de tentar entregar três.
